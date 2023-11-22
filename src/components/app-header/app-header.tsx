@@ -15,20 +15,22 @@ function AppHeader() {
     }
 
     return (
-        <header className={`${style.header} pt-4 pb-4`}>
-            <nav className={style.navigation}>
-                <ul className={style.navigation_panel}>
-                    <li className='pt-4 pb-4 pl-5 pr-5 mr-2'>
-                        <Link img={<BurgerIcon type="primary" />}>Конструктор</Link>
-                    </li>
-                    <li className='pt-4 pb-4 pl-5 pr-5'>
-                        <Link inActiv img={<ListIcon type="primary" />}>Лента заказов</Link>
-                    </li>
-                </ul>
-            </nav>
-            <Logo></Logo>
-            <div className={`${style.profile} pt-4 pb-4 pl-5 pr-5`}>
-                <Link inActiv img={<ProfileIcon type="primary" />}>Личный кабинет</Link>
+        <header className={style.header}>
+            <div className={`${style.header_wrapper} pt-4 pb-4`}>
+                <nav className={style.navigation}>
+                    <ul className={style.navigation_panel}>
+                        <li className='pt-4 pb-4 pl-5 pr-5 mr-2'>
+                            <Link img={<BurgerIcon type="primary" />}>Конструктор</Link>
+                        </li>
+                        <li className='pt-4 pb-4 pl-5 pr-5'>
+                            <Link inActiv img={<ListIcon type="secondary" />}>Лента заказов</Link>
+                        </li>
+                    </ul>
+                </nav>
+                <Logo></Logo>
+                <div className={`${style.profile} pt-4 pb-4 pl-5 pr-5`}>
+                    <Link inActiv img={<ProfileIcon type="secondary" />}>Личный кабинет</Link>
+                </div>
             </div>
         </header>
     );
