@@ -1,0 +1,9 @@
+.box {
+    display: flex;
+    align-items: center;
+}
+
+.name {
+    height: 48px;
+    text-align: center;
+}
