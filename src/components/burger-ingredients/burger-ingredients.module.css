@@ -1,0 +1,13 @@
+.ingredients {
+    width: 600px;
+}
+
+.tabs {
+    list-style-type: none;
+}
+
+.container {
+    composes: custom-scroll from global;
+    height: calc(100vh - 284px);
+    overflow-y: scroll;
+}

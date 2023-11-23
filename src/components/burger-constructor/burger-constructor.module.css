@@ -1,0 +1,32 @@
+.burger_constructor {
+    padding-top: 100px;
+    width: 600px;
+}
+
+.container {
+    margin-right: -16px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+    composes: custom-scroll from global;
+    height: calc(100vh - 536px);
+    overflow-y: scroll;
+}
+
+.info {
+    display: flex;
+    column-gap: 40px;
+    align-items: center;
+    justify-content: end;
+}
+
+.box {
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+}
+
+.box svg {
+    width: 36px;
+    height: 36px;
+}
