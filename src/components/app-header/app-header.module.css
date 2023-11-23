@@ -21,13 +21,6 @@
     list-style-type: none;
 }
 
-.link {
-    display: flex;
-    align-items: center;
-    color: #F2F2F3;
-    text-decoration: none;
-}
-
 .profile {
     margin-left: auto;
 }
