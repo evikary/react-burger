@@ -1,16 +1,21 @@
 import style from './burger-constructor.module.css';
 import { ConstructorElement, DragIcon, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import data from '../../utils/data.js';
+import { IIngredient } from '../../utils/types';
 
-function BurgerConstructor() {
+interface IProps {
+    data: IIngredient[];
+}
+
+function BurgerConstructor({ data }: IProps) {
     const bun = data.filter((item) => item.type === 'bun')[0];
     const toppings = data.filter((item) => item.type !== 'bun');
-
     return (
         <section className={style.burger_constructor}>
-            <div className="ml-8 mb-4">
-                <ConstructorElement type="top" isLocked={true} text={`${bun.name} (верх)`} price={bun.price} thumbnail={bun.image_mobile} />
-            </div>
+            {bun !== undefined && (
+                <div className="ml-8 mb-4">
+                    <ConstructorElement type="top" isLocked={true} text={`${bun.name} (верх)`} price={bun.price} thumbnail={bun.image_mobile} />
+                </div>
+            )}
             <div className={style.container}>
                 {toppings.map((item) => {
                     return (
@@ -21,9 +26,11 @@ function BurgerConstructor() {
                     );
                 })}
             </div>
-            <div className="mt-4 ml-8">
-                <ConstructorElement type="bottom" isLocked={true} text={`${bun.name} (низ)`} price={bun.price} thumbnail={bun.image_mobile} />
-            </div>
+            {bun !== undefined && (
+                <div className="mt-4 ml-8">
+                    <ConstructorElement type="bottom" isLocked={true} text={`${bun.name} (низ)`} price={bun.price} thumbnail={bun.image_mobile} />
+                </div>
+            )}
             <div className={`${style.info} mt-10 mr-4`}>
                 <div className={style.box}>
                     <span className="text text_type_digits-medium">610</span>
