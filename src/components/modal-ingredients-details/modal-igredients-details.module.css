@@ -1,0 +1,16 @@
+.title {
+    margin-right: auto;
+    line-height: 64px;
+}
+
+.box {
+    display: flex;
+    column-gap: 20px;
+}
+
+.box_mini {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 8px;
+}

@@ -1,12 +1,16 @@
 import style from './burger-constructor.module.css';
 import { ConstructorElement, DragIcon, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IIngredient } from '../../utils/types';
+import Modal from '../modal/modal';
+import { useState } from 'react';
+import OrderDetails from '../order-details/order-details';
 
 interface IProps {
     data: IIngredient[];
 }
 
 function BurgerConstructor({ data }: IProps) {
+    const [open, setOpen] = useState(false);
     const bun = data.filter((item) => item.type === 'bun')[0];
     const toppings = data.filter((item) => item.type !== 'bun');
     return (
@@ -36,10 +40,15 @@ function BurgerConstructor({ data }: IProps) {
                     <span className="text text_type_digits-medium">610</span>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button htmlType="button" type="primary" size="large">
+                <Button onClick={() => setOpen(true)} htmlType="button" type="primary" size="large">
                     Оформить заказ
                 </Button>
             </div>
+            {open && (
+                <Modal onClose={() => setOpen(false)}>
+                    <OrderDetails />
+                </Modal>
+            )}
         </section>
     );
 }
