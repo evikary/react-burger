@@ -1,9 +1,11 @@
 import style from './ingredients-category.module.css';
+import { v4 as uuidv4 } from 'uuid';
 import IngredientDetail from '../ingredient-details/ingredient-detail';
-import { IIngredient } from '../../utils/types';
-import { useState } from 'react';
+import { IConstructorContext, IIngredient } from '../../utils/types';
+import { useContext, useState } from 'react';
 import Modal from '../modal/modal';
 import ModalIngredientsDetails from '../modal-ingredients-details/modal-igredients-details';
+import { ConstructorContext } from '../../services/constructorContext';
 
 interface IProps {
     ingredients: IIngredient[];
@@ -11,10 +13,16 @@ interface IProps {
 }
 
 function IngredientsСategory({ ingredients, children }: IProps) {
+    const { ingredientsConstructor, setIngredientsConstructor } = useContext<IConstructorContext>(ConstructorContext);
     const [open, setOpen] = useState(false);
     const [detail, setDetail] = useState<IIngredient | null>(null);
 
     const handleClick = (item: IIngredient) => {
+        if (item.type === 'bun') {
+            setIngredientsConstructor({ ...ingredientsConstructor, bun: item });
+        } else {
+            setIngredientsConstructor({ ...ingredientsConstructor, toppings: [...ingredientsConstructor.toppings, { ...item, key: uuidv4() }] });
+        }
         setDetail(item);
         setOpen(true);
     };

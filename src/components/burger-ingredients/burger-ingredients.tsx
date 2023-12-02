@@ -1,19 +1,17 @@
-import React, { useMemo } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { useState } from 'react';
 import style from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientsСategory from '../ingredients-category/ingredients-category';
-import { IIngredient } from '../../utils/types';
+import { IIngredientsContext } from '../../utils/types';
+import { IngredientsContext } from '../../services/ingredientsContext';
 
-interface IProps {
-    data: IIngredient[];
-}
-
-function BurgerIngredients({ data }: IProps) {
+function BurgerIngredients() {
+    const { ingredients } = useContext<IIngredientsContext>(IngredientsContext);
     const [current, setCurrent] = useState('one');
-    const buns = useMemo(() => data.filter((item) => item.type === 'bun'), [data]);
-    const sauces = useMemo(() => data.filter((item) => item.type === 'sauce'), [data]);
-    const mains = useMemo(() => data.filter((item) => item.type === 'main'), [data]);
+    const buns = useMemo(() => ingredients.filter((item) => item.type === 'bun'), [ingredients]);
+    const sauces = useMemo(() => ingredients.filter((item) => item.type === 'sauce'), [ingredients]);
+    const mains = useMemo(() => ingredients.filter((item) => item.type === 'main'), [ingredients]);
 
     return (
         <section className={`${style.ingredients} pt-10`}>

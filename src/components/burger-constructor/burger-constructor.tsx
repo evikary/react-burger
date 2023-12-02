@@ -1,44 +1,51 @@
 import style from './burger-constructor.module.css';
 import { ConstructorElement, DragIcon, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { IIngredient } from '../../utils/types';
+import { IConstructorContext } from '../../utils/types';
 import Modal from '../modal/modal';
-import { useMemo, useState } from 'react';
+import { useContext, useState } from 'react';
 import OrderDetails from '../order-details/order-details';
+import { ConstructorContext } from '../../services/constructorContext';
 
-interface IProps {
-    data: IIngredient[];
-}
-
-function BurgerConstructor({ data }: IProps) {
+function BurgerConstructor() {
+    const { ingredientsConstructor, setIngredientsConstructor } = useContext<IConstructorContext>(ConstructorContext);
+    const { bun, toppings } = ingredientsConstructor;
     const [open, setOpen] = useState(false);
-    const bun = useMemo(() => data.filter((item) => item.type === 'bun')[0], [data]);
-    const toppings = useMemo(() => data.filter((item) => item.type !== 'bun'), [data]);
+
+    const getPrice = () => {
+        const res = toppings.map((i) => i.price).reduce((acc, item) => acc + item, 0);
+        const price = bun !== null ? bun?.price * 2 + res : null;
+        return price;
+    };
 
     return (
         <section className={style.burger_constructor}>
-            {bun !== undefined && (
+            {bun !== null && (
                 <div className="ml-8 mb-4">
                     <ConstructorElement type="top" isLocked={true} text={`${bun.name} (верх)`} price={bun.price} thumbnail={bun.image_mobile} />
                 </div>
             )}
             <div className={style.container}>
-                {toppings.map((item) => {
-                    return (
-                        <div className={style.box} key={item._id}>
-                            <DragIcon type="primary" />
-                            <ConstructorElement text={item.name} price={item.price} thumbnail={item.image_mobile} />
-                        </div>
-                    );
-                })}
+                {toppings.length !== 0 ? (
+                    toppings.map((item) => {
+                        return (
+                            <div className={style.box} key={item.key}>
+                                <DragIcon type="primary" />
+                                <ConstructorElement text={item.name} price={item.price} thumbnail={item.image_mobile} />
+                            </div>
+                        );
+                    })
+                ) : (
+                    <div className={`${style.stopper} text text_type_main-medium`}>Выберите начинку для вашего бургера</div>
+                )}
             </div>
-            {bun !== undefined && (
+            {bun !== null && (
                 <div className="mt-4 ml-8">
                     <ConstructorElement type="bottom" isLocked={true} text={`${bun.name} (низ)`} price={bun.price} thumbnail={bun.image_mobile} />
                 </div>
             )}
             <div className={`${style.info} mt-10 mr-4`}>
                 <div className={style.box}>
-                    <span className="text text_type_digits-medium">610</span>
+                    <span className="text text_type_digits-medium">{getPrice()}</span>
                     <CurrencyIcon type="primary" />
                 </div>
                 <Button onClick={() => setOpen(true)} htmlType="button" type="primary" size="large">

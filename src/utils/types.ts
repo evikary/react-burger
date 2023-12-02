@@ -10,4 +10,20 @@ export interface IIngredient {
     image: string;
     image_mobile: string;
     image_large: string;
+    key?: string;
+}
+
+export interface IConstructor {
+    bun: IIngredient | null;
+    toppings: IIngredient[];
+}
+
+export interface IIngredientsContext {
+    ingredients: IIngredient[];
+    setIngredients: (ingredients: IIngredient[]) => void;
+}
+
+export interface IConstructorContext {
+    ingredientsConstructor: IConstructor;
+    setIngredientsConstructor: (ingredientsConstructor: IConstructor) => void;
 }
