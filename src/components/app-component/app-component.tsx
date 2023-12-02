@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import style from './app-component.module.css';
 import AppHeader from '../app-header/app-header';
-import BurgerIngridients from '../burger-ingredients/burger-ingredients';
+import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { linkIngredients } from '../../utils/ constants';
 import ErrorAPI from '../error-api/error-api';
@@ -22,14 +22,10 @@ function App() {
 
             const json = await response.json();
             setData(json.data);
-            setTimeout(() => {
-                setLoad(false);
-            }, 500);
+            setLoad(false);
         } catch (error) {
             setError(true);
-            setTimeout(() => {
-                setLoad(false);
-            }, 500);
+            setLoad(false);
         }
     };
 
@@ -45,7 +41,7 @@ function App() {
                 <>
                     <AppHeader />
                     <main className={style.main}>
-                        <BurgerIngridients data={data} />
+                        <BurgerIngredients data={data} />
                         <BurgerConstructor data={data} />
                     </main>
                 </>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useState } from 'react';
 import style from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -11,9 +11,9 @@ interface IProps {
 
 function BurgerIngredients({ data }: IProps) {
     const [current, setCurrent] = useState('one');
-    const buns = data.filter((item) => item.type === 'bun');
-    const sauces = data.filter((item) => item.type === 'sauce');
-    const mains = data.filter((item) => item.type === 'main');
+    const buns = useMemo(() => data.filter((item) => item.type === 'bun'), [data]);
+    const sauces = useMemo(() => data.filter((item) => item.type === 'sauce'), [data]);
+    const mains = useMemo(() => data.filter((item) => item.type === 'main'), [data]);
 
     return (
         <section className={`${style.ingredients} pt-10`}>

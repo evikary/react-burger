@@ -2,7 +2,7 @@ import style from './burger-constructor.module.css';
 import { ConstructorElement, DragIcon, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IIngredient } from '../../utils/types';
 import Modal from '../modal/modal';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import OrderDetails from '../order-details/order-details';
 
 interface IProps {
@@ -11,8 +11,9 @@ interface IProps {
 
 function BurgerConstructor({ data }: IProps) {
     const [open, setOpen] = useState(false);
-    const bun = data.filter((item) => item.type === 'bun')[0];
-    const toppings = data.filter((item) => item.type !== 'bun');
+    const bun = useMemo(() => data.filter((item) => item.type === 'bun')[0], [data]);
+    const toppings = useMemo(() => data.filter((item) => item.type !== 'bun'), [data]);
+
     return (
         <section className={style.burger_constructor}>
             {bun !== undefined && (
