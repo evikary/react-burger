@@ -1,3 +1,5 @@
+import { IConstructorAction } from '../services/reducer';
+
 export interface IIngredient {
     _id: string;
     name: string;
@@ -25,5 +27,5 @@ export interface IIngredientsContext {
 
 export interface IConstructorContext {
     ingredientsConstructor: IConstructor;
-    setIngredientsConstructor: (ingredientsConstructor: IConstructor) => void;
+    setIngredientsConstructor: (action: IConstructorAction) => void;
 }

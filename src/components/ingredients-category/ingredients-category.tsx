@@ -6,6 +6,7 @@ import { useContext, useState } from 'react';
 import Modal from '../modal/modal';
 import ModalIngredientsDetails from '../modal-ingredients-details/modal-igredients-details';
 import { ConstructorContext } from '../../services/constructorContext';
+import { typeActions } from '../../services/reducer';
 
 interface IProps {
     ingredients: IIngredient[];
@@ -13,16 +14,12 @@ interface IProps {
 }
 
 function IngredientsСategory({ ingredients, children }: IProps) {
-    const { ingredientsConstructor, setIngredientsConstructor } = useContext<IConstructorContext>(ConstructorContext);
+    const { setIngredientsConstructor } = useContext<IConstructorContext>(ConstructorContext);
     const [open, setOpen] = useState(false);
     const [detail, setDetail] = useState<IIngredient | null>(null);
 
     const handleClick = (item: IIngredient) => {
-        if (item.type === 'bun') {
-            setIngredientsConstructor({ ...ingredientsConstructor, bun: item });
-        } else {
-            setIngredientsConstructor({ ...ingredientsConstructor, toppings: [...ingredientsConstructor.toppings, { ...item, key: uuidv4() }] });
-        }
+        setIngredientsConstructor({ type: typeActions.ADD, payload: { ...item, key: uuidv4() } });
         setDetail(item);
         setOpen(true);
     };

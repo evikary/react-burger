@@ -1,10 +1,11 @@
 import style from './burger-constructor.module.css';
 import { ConstructorElement, DragIcon, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { IConstructorContext } from '../../utils/types';
+import { IConstructorContext, IIngredient } from '../../utils/types';
 import Modal from '../modal/modal';
 import { useContext, useState } from 'react';
 import OrderDetails from '../order-details/order-details';
 import { ConstructorContext } from '../../services/constructorContext';
+import { typeActions } from '../../services/reducer';
 
 function BurgerConstructor() {
     const { ingredientsConstructor, setIngredientsConstructor } = useContext<IConstructorContext>(ConstructorContext);
@@ -15,6 +16,10 @@ function BurgerConstructor() {
         const res = toppings.map((i) => i.price).reduce((acc, item) => acc + item, 0);
         const price = bun !== null ? bun?.price * 2 + res : null;
         return price;
+    };
+
+    const removeElement = (item: IIngredient) => {
+        setIngredientsConstructor({ type: typeActions.REMOVE, payload: item });
     };
 
     return (
@@ -30,7 +35,12 @@ function BurgerConstructor() {
                         return (
                             <div className={style.box} key={item.key}>
                                 <DragIcon type="primary" />
-                                <ConstructorElement text={item.name} price={item.price} thumbnail={item.image_mobile} />
+                                <ConstructorElement
+                                    handleClose={() => removeElement(item)}
+                                    text={item.name}
+                                    price={item.price}
+                                    thumbnail={item.image_mobile}
+                                />
                             </div>
                         );
                     })
