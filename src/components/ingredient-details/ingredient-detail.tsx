@@ -1,5 +1,5 @@
 import style from './ingredient-detail.module.css';
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 interface IProps {
     image: string;
@@ -10,6 +10,7 @@ interface IProps {
 function IngredientDetail({ image, name, price }: IProps) {
     return (
         <>
+            <Counter count={1} size="default" extraClass="m-1" />
             <img src={image} alt={name} />
             <div className={`${style.box} mt-2 mb-2`}>
                 <span className="mr-2 text text_type_digits-default">{price}</span>

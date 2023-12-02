@@ -4,7 +4,6 @@
 }
 
 .container {
-    margin-right: -16px;
     display: flex;
     flex-direction: column;
     row-gap: 16px;
@@ -26,7 +25,7 @@
     column-gap: 8px;
 }
 
-.box svg {
+.box svg:nth-child(2) {
     width: 36px;
     height: 36px;
 }
