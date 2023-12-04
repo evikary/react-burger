@@ -1,16 +1,18 @@
 import style from './burger-constructor.module.css';
 import { ConstructorElement, DragIcon, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { IConstructorContext, IIngredient } from '../../utils/types';
+import { IConstructorContext, IIngredient, IBodyPost, IOrder } from '../../utils/types';
 import Modal from '../modal/modal';
 import { useContext, useState } from 'react';
 import OrderDetails from '../order-details/order-details';
 import { ConstructorContext } from '../../services/constructorContext';
 import { typeActions } from '../../services/reducer';
+import { sendLinkIngredients } from '../../utils/ constants';
 
 function BurgerConstructor() {
     const { ingredientsConstructor, setIngredientsConstructor } = useContext<IConstructorContext>(ConstructorContext);
     const { bun, toppings } = ingredientsConstructor;
     const [open, setOpen] = useState(false);
+    const [order, setOrder] = useState<IOrder | null>(null);
 
     const getPrice = () => {
         const res = toppings.map((i) => i.price).reduce((acc, item) => acc + item, 0);
@@ -20,6 +22,39 @@ function BurgerConstructor() {
 
     const removeElement = (item: IIngredient) => {
         setIngredientsConstructor({ type: typeActions.REMOVE, payload: item });
+    };
+
+    const sendIngredients = async (url: string, data: IBodyPost) => {
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(data),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Произошла ошибка по адресу ${url}, статус ошибки ${response}`);
+            }
+
+            return await response.json();
+        } catch (error) {
+            setOrder(null);
+        }
+    };
+
+    const sendApi = () => {
+        if (ingredientsConstructor.bun !== null || ingredientsConstructor.toppings.length !== 0) {
+            const arr = ingredientsConstructor.toppings.map((i) => i._id);
+            if (ingredientsConstructor.bun) {
+                arr.push(ingredientsConstructor.bun._id, ingredientsConstructor.bun._id);
+            }
+
+            sendIngredients(sendLinkIngredients, { ingredients: arr }).then((data) => {
+                setOpen(true);
+                if (data) {
+                    setOrder(data);
+                }
+            });
+        }
     };
 
     return (
@@ -58,13 +93,13 @@ function BurgerConstructor() {
                     <span className="text text_type_digits-medium">{getPrice()}</span>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button onClick={() => setOpen(true)} htmlType="button" type="primary" size="large">
+                <Button onClick={() => sendApi()} htmlType="button" type="primary" size="large">
                     Оформить заказ
                 </Button>
             </div>
-            {open && (
+            {open && order && (
                 <Modal onClose={() => setOpen(false)}>
-                    <OrderDetails />
+                    <OrderDetails order={order.order.number} />
                 </Modal>
             )}
         </section>

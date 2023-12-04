@@ -29,3 +29,15 @@ export interface IConstructorContext {
     ingredientsConstructor: IConstructor;
     setIngredientsConstructor: (action: IConstructorAction) => void;
 }
+
+export interface IBodyPost {
+    ingredients: string[];
+}
+
+export interface IOrder {
+    name: string;
+    order: {
+        number: number;
+    };
+    success: boolean;
+}
