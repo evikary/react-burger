@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useMemo, useReducer, useState } from 'react';
 import style from './app-component.module.css';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
@@ -38,6 +38,14 @@ function App() {
         getIngredients(linkIngredients);
     }, []);
 
+    const ingredientsContext = useMemo(() => {
+        return { ingredients: data, setIngredients: setData };
+    }, [data, setData]);
+
+    const constructorContext = useMemo(() => {
+        return { ingredientsConstructor, setIngredientsConstructor };
+    }, [ingredientsConstructor, setIngredientsConstructor]);
+
     return (
         <>
             {load && <Loader />}
@@ -46,8 +54,8 @@ function App() {
                 <>
                     <AppHeader />
                     <main className={style.main}>
-                        <IngredientsContext.Provider value={{ ingredients: data, setIngredients: setData }}>
-                            <ConstructorContext.Provider value={{ ingredientsConstructor, setIngredientsConstructor }}>
+                        <IngredientsContext.Provider value={ingredientsContext}>
+                            <ConstructorContext.Provider value={constructorContext}>
                                 <BurgerIngredients />
                                 <BurgerConstructor />
                             </ConstructorContext.Provider>

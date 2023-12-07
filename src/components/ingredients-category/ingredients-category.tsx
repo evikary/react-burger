@@ -2,7 +2,7 @@ import style from './ingredients-category.module.css';
 import { v4 as uuidv4 } from 'uuid';
 import IngredientDetail from '../ingredient-details/ingredient-detail';
 import { IConstructorContext, IIngredient } from '../../utils/types';
-import { useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Modal from '../modal/modal';
 import ModalIngredientsDetails from '../modal-ingredients-details/modal-igredients-details';
 import { ConstructorContext } from '../../services/constructorContext';
@@ -45,4 +45,4 @@ function IngredientsСategory({ ingredients, children }: IProps) {
     );
 }
 
-export default IngredientsСategory;
+export default React.memo(IngredientsСategory);

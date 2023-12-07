@@ -2,7 +2,7 @@ import style from './burger-constructor.module.css';
 import { ConstructorElement, DragIcon, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IConstructorContext, IIngredient, IBodyPost, IOrder } from '../../utils/types';
 import Modal from '../modal/modal';
-import { useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import OrderDetails from '../order-details/order-details';
 import { ConstructorContext } from '../../services/constructorContext';
 import { typeActions } from '../../services/reducer';
@@ -29,6 +29,9 @@ function BurgerConstructor() {
             const response = await fetch(url, {
                 method: 'POST',
                 body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
             });
 
             if (!response.ok) {
@@ -106,4 +109,4 @@ function BurgerConstructor() {
     );
 }
 
-export default BurgerConstructor;
+export default React.memo(BurgerConstructor);
