@@ -1,18 +1,19 @@
 import style from './burger-constructor.module.css';
 import { ConstructorElement, DragIcon, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { IConstructorContext, IIngredient, IBodyPost, IOrder } from '../../utils/types';
+import { IIngredient } from '../../utils/types';
 import Modal from '../modal/modal';
-import React, { useContext, useState } from 'react';
 import OrderDetails from '../order-details/order-details';
-import { ConstructorContext } from '../../services/constructorContext';
-import { typeActions } from '../../services/reducer';
-import { sendLinkIngredients } from '../../utils/ constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeIngredient } from '../../services/constructor-ingredients/actions';
+import { allIngredients } from '../../services/constructor-ingredients/selector';
+import { getOrderModal } from '../../services/modal-order/selector';
+import { closeModal, sendIngredients } from '../../services/modal-order/action';
+import React from 'react';
 
 function BurgerConstructor() {
-    const { ingredientsConstructor, setIngredientsConstructor } = useContext<IConstructorContext>(ConstructorContext);
-    const { bun, toppings } = ingredientsConstructor;
-    const [open, setOpen] = useState(false);
-    const [order, setOrder] = useState<IOrder | null>(null);
+    const { bun, toppings } = useSelector(allIngredients);
+    const number = useSelector(getOrderModal);
+    const dispatch = useDispatch();
 
     const getPrice = () => {
         const res = toppings.map((i) => i.price).reduce((acc, item) => acc + item, 0);
@@ -21,42 +22,16 @@ function BurgerConstructor() {
     };
 
     const removeElement = (item: IIngredient) => {
-        setIngredientsConstructor({ type: typeActions.REMOVE, payload: item });
-    };
-
-    const sendIngredients = async (url: string, data: IBodyPost) => {
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error(`Произошла ошибка по адресу ${url}, статус ошибки ${response}`);
-            }
-
-            return await response.json();
-        } catch (error) {
-            setOrder(null);
-        }
+        dispatch(removeIngredient(item));
     };
 
     const sendApi = () => {
-        if (ingredientsConstructor.bun !== null || ingredientsConstructor.toppings.length !== 0) {
-            const arr = ingredientsConstructor.toppings.map((i) => i._id);
-            if (ingredientsConstructor.bun) {
-                arr.push(ingredientsConstructor.bun._id, ingredientsConstructor.bun._id);
+        if (bun !== null || toppings.length !== 0) {
+            const arr = toppings.map((i) => i._id);
+            if (bun) {
+                arr.push(bun._id, bun._id);
             }
-
-            sendIngredients(sendLinkIngredients, { ingredients: arr }).then((data) => {
-                setOpen(true);
-                if (data) {
-                    setOrder(data);
-                }
-            });
+            dispatch<any>(sendIngredients({ ingredients: arr }));
         }
     };
 
@@ -100,9 +75,9 @@ function BurgerConstructor() {
                     Оформить заказ
                 </Button>
             </div>
-            {open && order && (
-                <Modal onClose={() => setOpen(false)}>
-                    <OrderDetails order={order.order.number} />
+            {number && (
+                <Modal onClose={() => dispatch(closeModal())}>
+                    <OrderDetails order={number} />
                 </Modal>
             )}
         </section>

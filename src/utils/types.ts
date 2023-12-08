@@ -1,5 +1,3 @@
-import { IConstructorAction } from '../services/reducer';
-
 export interface IIngredient {
     _id: string;
     name: string;
@@ -20,16 +18,6 @@ export interface IConstructor {
     toppings: IIngredient[];
 }
 
-export interface IIngredientsContext {
-    ingredients: IIngredient[];
-    setIngredients: (ingredients: IIngredient[]) => void;
-}
-
-export interface IConstructorContext {
-    ingredientsConstructor: IConstructor;
-    setIngredientsConstructor: (action: IConstructorAction) => void;
-}
-
 export interface IBodyPost {
     ingredients: string[];
 }
@@ -37,7 +25,38 @@ export interface IBodyPost {
 export interface IOrder {
     name: string;
     order: {
-        number: number;
+        num: number | null;
     };
     success: boolean;
+}
+
+export interface IConstructorAction {
+    type: string;
+    payload: IIngredient;
+}
+
+export interface IStore {
+    ingredientsConstructor: IConstructor;
+    burgerIngredients: {
+        load: boolean;
+        fail: boolean;
+        items: IIngredient[];
+    };
+    orderModal: {
+        num: null | number;
+    };
+}
+
+export interface IIngredientsAction {
+    type: string;
+    payload: IIngredient[];
+}
+
+export interface IModalAction {
+    type: string;
+    payload: null | number;
+}
+
+export interface INumberOrder {
+    num: null | number;
 }

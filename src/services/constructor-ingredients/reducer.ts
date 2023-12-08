@@ -1,25 +1,21 @@
-import { IConstructor, IIngredient } from '../utils/types';
+import { IConstructor, IConstructorAction } from '../../utils/types';
+import { ADD_INGREDIENT, REMOVE_INGREDIENT } from './actions';
 
-export enum typeActions {
-    ADD = 'ADD',
-    REMOVE = 'REMOVE',
-}
+const initialState: IConstructor = {
+    bun: null,
+    toppings: [],
+};
 
-export interface IConstructorAction {
-    type: typeActions;
-    payload: IIngredient;
-}
-
-export function constructorReducer(state: IConstructor, action: IConstructorAction) {
+export function constructorReducer(state = initialState, action: IConstructorAction) {
     const { type, payload } = action;
     switch (type) {
-        case typeActions.ADD:
+        case ADD_INGREDIENT:
             if (payload.type === 'bun') {
                 return { ...state, bun: payload };
             } else {
                 return { ...state, toppings: [...state.toppings, payload] };
             }
-        case typeActions.REMOVE:
+        case REMOVE_INGREDIENT:
             return { ...state, toppings: state.toppings.filter((item) => item.key !== payload.key) };
         default:
             return state;

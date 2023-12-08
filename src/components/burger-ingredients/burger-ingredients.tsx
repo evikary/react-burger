@@ -1,17 +1,17 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useState } from 'react';
 import style from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientsСategory from '../ingredients-category/ingredients-category';
-import { IIngredientsContext } from '../../utils/types';
-import { IngredientsContext } from '../../services/ingredientsContext';
+import { useSelector } from 'react-redux';
+import { allItems } from '../../services/burger-ingredients/selector';
 
 function BurgerIngredients() {
-    const { ingredients } = useContext<IIngredientsContext>(IngredientsContext);
+    const { items } = useSelector(allItems);
     const [current, setCurrent] = useState('one');
-    const buns = useMemo(() => ingredients.filter((item) => item.type === 'bun'), [ingredients]);
-    const sauces = useMemo(() => ingredients.filter((item) => item.type === 'sauce'), [ingredients]);
-    const mains = useMemo(() => ingredients.filter((item) => item.type === 'main'), [ingredients]);
+    const buns = useMemo(() => items.filter((item) => item.type === 'bun'), [items]);
+    const sauces = useMemo(() => items.filter((item) => item.type === 'sauce'), [items]);
+    const mains = useMemo(() => items.filter((item) => item.type === 'main'), [items]);
 
     return (
         <section className={`${style.ingredients} pt-10`}>
@@ -45,4 +45,3 @@ function BurgerIngredients() {
 }
 
 export default React.memo(BurgerIngredients);
-// export default BurgerIngredients;
