@@ -1,5 +1,6 @@
 import style from './ingredient-detail.module.css';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import React from 'react';
 
 interface IProps {
     image: string;
@@ -21,4 +22,4 @@ function IngredientDetail({ image, name, price }: IProps) {
     );
 }
 
-export default IngredientDetail;
+export default React.memo(IngredientDetail);

@@ -1,20 +1,22 @@
+import { Dispatch } from 'redux';
 import { sendLinkIngredients } from '../../utils/ constants';
 import { IBodyPost } from '../../utils/types';
 
-export const OPEN_MODAL = 'OPEN_MODAL';
-export const CLOSE_MODAL = 'CLOSE_MODAL';
+export const OPEN_MODAL_ORDER = 'OPEN_MODAL_ORDER';
+export const CLOSE_MODAL_ORDER = 'CLOSE_MODAL_ORDER';
+export const MODAL_ORDER_FAILED = 'MODAL_ORDER_FAILED';
 
-export const openModal = (order: number) => ({
-    type: OPEN_MODAL,
+export const openModalOrder = (order: number) => ({
+    type: OPEN_MODAL_ORDER,
     payload: order,
 });
 
-export const closeModal = () => ({
-    type: CLOSE_MODAL,
+export const closeModalOrder = () => ({
+    type: CLOSE_MODAL_ORDER,
 });
 
 export function sendIngredients(data: IBodyPost) {
-    return function (dispatch: any) {
+    return function (dispatch: Dispatch) {
         fetch(sendLinkIngredients, {
             method: 'POST',
             body: JSON.stringify(data),
@@ -30,15 +32,12 @@ export function sendIngredients(data: IBodyPost) {
                 return res.json();
             })
             .then((json) => {
-                dispatch({
-                    type: OPEN_MODAL,
-                    payload: json.order.number,
-                });
+                dispatch(openModalOrder(json.order.number));
             })
             .catch((error) => {
-                // dispatch({
-                //     type: SEND_IINGREDIENTS_FAILED,
-                // });
+                dispatch({
+                    type: MODAL_ORDER_FAILED,
+                });
             });
     };
 }

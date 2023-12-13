@@ -1,10 +1,17 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useState } from 'react';
 import style from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientsСategory from '../ingredients-category/ingredients-category';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { allItems } from '../../services/burger-ingredients/selector';
+import Modal from '../modal/modal';
+import ModalIngredientsDetails from '../modal-ingredients-details/modal-igredients-details';
+import { closeModalIngredients, openModalIngredients } from '../../services/modal-burger/action';
+import { IIngredient } from '../../utils/types';
+import { addIngredient } from '../../services/constructor-ingredients/actions';
+import { getIngredientModal } from '../../services/modal-burger/selector';
+import { v4 as uuidv4 } from 'uuid';
 
 function BurgerIngredients() {
     const { items } = useSelector(allItems);
@@ -12,6 +19,14 @@ function BurgerIngredients() {
     const buns = useMemo(() => items.filter((item) => item.type === 'bun'), [items]);
     const sauces = useMemo(() => items.filter((item) => item.type === 'sauce'), [items]);
     const mains = useMemo(() => items.filter((item) => item.type === 'main'), [items]);
+    const dispatch = useDispatch();
+
+    const handleClick = useCallback((item: IIngredient) => {
+        dispatch(addIngredient({ ...item, key: uuidv4() }));
+        dispatch(openModalIngredients(item));
+    }, []);
+
+    const detail = useSelector(getIngredientModal);
 
     return (
         <section className={`${style.ingredients} pt-10`}>
@@ -36,10 +51,21 @@ function BurgerIngredients() {
                 </ul>
             </aside>
             <section className={`${style.container} mt-10`}>
-                <IngredientsСategory ingredients={buns}>Булки</IngredientsСategory>
-                <IngredientsСategory ingredients={sauces}>Соусы</IngredientsСategory>
-                <IngredientsСategory ingredients={mains}>Начинки</IngredientsСategory>
+                <IngredientsСategory onClick={handleClick} ingredients={buns}>
+                    Булки
+                </IngredientsСategory>
+                <IngredientsСategory onClick={handleClick} ingredients={sauces}>
+                    Соусы
+                </IngredientsСategory>
+                <IngredientsСategory onClick={handleClick} ingredients={mains}>
+                    Начинки
+                </IngredientsСategory>
             </section>
+            {detail !== null && (
+                <Modal onClose={() => dispatch(closeModalIngredients())}>
+                    <ModalIngredientsDetails details={detail} />
+                </Modal>
+            )}
         </section>
     );
 }

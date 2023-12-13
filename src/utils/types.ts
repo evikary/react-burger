@@ -45,6 +45,9 @@ export interface IStore {
     orderModal: {
         num: null | number;
     };
+    ingredientModal: {
+        ingredientItem: null | IIngredient;
+    };
 }
 
 export interface IIngredientsAction {
@@ -59,4 +62,13 @@ export interface IModalAction {
 
 export interface INumberOrder {
     num: null | number;
+}
+
+export interface IModalIngredientsAction {
+    type: string;
+    payload: null | IIngredient;
+}
+
+export interface IIngredientItem {
+    ingredientItem: null | IIngredient;
 }

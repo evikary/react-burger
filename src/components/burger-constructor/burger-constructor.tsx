@@ -7,13 +7,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removeIngredient } from '../../services/constructor-ingredients/actions';
 import { allIngredients } from '../../services/constructor-ingredients/selector';
 import { getOrderModal } from '../../services/modal-order/selector';
-import { closeModal, sendIngredients } from '../../services/modal-order/action';
+import { closeModalOrder, sendIngredients } from '../../services/modal-order/action';
 import React from 'react';
 
 function BurgerConstructor() {
     const { bun, toppings } = useSelector(allIngredients);
     const number = useSelector(getOrderModal);
-    const dispatch = useDispatch();
+    const dispatch: any = useDispatch();
 
     const getPrice = () => {
         const res = toppings.map((i) => i.price).reduce((acc, item) => acc + item, 0);
@@ -31,7 +31,7 @@ function BurgerConstructor() {
             if (bun) {
                 arr.push(bun._id, bun._id);
             }
-            dispatch<any>(sendIngredients({ ingredients: arr }));
+            dispatch(sendIngredients({ ingredients: arr }));
         }
     };
 
@@ -76,7 +76,7 @@ function BurgerConstructor() {
                 </Button>
             </div>
             {number && (
-                <Modal onClose={() => dispatch(closeModal())}>
+                <Modal onClose={() => dispatch(closeModalOrder())}>
                     <OrderDetails order={number} />
                 </Modal>
             )}
