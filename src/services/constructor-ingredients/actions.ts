@@ -1,11 +1,12 @@
 import { IIngredient } from '../../utils/types';
+import { v4 as uuidv4 } from 'uuid';
 
-export const ADD_INGREDIENT = 'ADD_INGREDIENT';
-export const REMOVE_INGREDIENT = 'REMOVE_INGREDIENT';
+export const ADD_INGREDIENT = 'CONSTRUCTOR/ADD_INGREDIENT';
+export const REMOVE_INGREDIENT = 'CONSTRUCTOR/REMOVE_INGREDIENT';
 
-export const SEND_IINGREDIENTS_REQUEST = 'SEND_IINGREDIENTS_REQUEST';
-export const SEND_IINGREDIENTS_SUCCESS = 'SEND_IINGREDIENTS_SUCCESS';
-export const SEND_IINGREDIENTS_FAILED = 'SEND_IINGREDIENTS_FAILED';
+export const SEND_IINGREDIENTS_REQUEST = 'CONSTRUCTOR/SEND_IINGREDIENTS_REQUEST';
+export const SEND_IINGREDIENTS_SUCCESS = 'CONSTRUCTOR/SEND_IINGREDIENTS_SUCCESS';
+export const SEND_IINGREDIENTS_FAILED = 'CONSTRUCTOR/SEND_IINGREDIENTS_FAILED';
 
 export const removeIngredient = (ingredient: IIngredient) => ({
     type: REMOVE_INGREDIENT,
@@ -14,5 +15,5 @@ export const removeIngredient = (ingredient: IIngredient) => ({
 
 export const addIngredient = (ingredient: IIngredient) => ({
     type: ADD_INGREDIENT,
-    payload: ingredient,
+    payload: { ...ingredient, key: uuidv4() },
 });

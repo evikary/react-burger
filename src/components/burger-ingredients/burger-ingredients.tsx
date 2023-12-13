@@ -11,7 +11,6 @@ import { closeModalIngredients, openModalIngredients } from '../../services/moda
 import { IIngredient } from '../../utils/types';
 import { addIngredient } from '../../services/constructor-ingredients/actions';
 import { getIngredientModal } from '../../services/modal-burger/selector';
-import { v4 as uuidv4 } from 'uuid';
 
 function BurgerIngredients() {
     const { items } = useSelector(allItems);
@@ -22,7 +21,7 @@ function BurgerIngredients() {
     const dispatch = useDispatch();
 
     const handleClick = useCallback((item: IIngredient) => {
-        dispatch(addIngredient({ ...item, key: uuidv4() }));
+        dispatch(addIngredient(item));
         dispatch(openModalIngredients(item));
     }, []);
 

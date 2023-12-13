@@ -8,18 +8,18 @@ import { removeIngredient } from '../../services/constructor-ingredients/actions
 import { allIngredients } from '../../services/constructor-ingredients/selector';
 import { getOrderModal } from '../../services/modal-order/selector';
 import { closeModalOrder, sendIngredients } from '../../services/modal-order/action';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 function BurgerConstructor() {
     const { bun, toppings } = useSelector(allIngredients);
     const number = useSelector(getOrderModal);
     const dispatch: any = useDispatch();
 
-    const getPrice = () => {
+    const getPrice = useMemo(() => {
         const res = toppings.map((i) => i.price).reduce((acc, item) => acc + item, 0);
         const price = bun !== null ? bun?.price * 2 + res : null;
         return price;
-    };
+    }, [bun, toppings]);
 
     const removeElement = (item: IIngredient) => {
         dispatch(removeIngredient(item));
@@ -68,7 +68,7 @@ function BurgerConstructor() {
             )}
             <div className={`${style.info} mt-10 mr-4`}>
                 <div className={style.box}>
-                    <span className="text text_type_digits-medium">{getPrice()}</span>
+                    <span className="text text_type_digits-medium">{getPrice}</span>
                     <CurrencyIcon type="primary" />
                 </div>
                 <Button onClick={() => sendApi()} htmlType="button" type="primary" size="large">

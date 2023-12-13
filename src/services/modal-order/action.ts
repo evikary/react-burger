@@ -2,9 +2,9 @@ import { Dispatch } from 'redux';
 import { sendLinkIngredients } from '../../utils/ constants';
 import { IBodyPost } from '../../utils/types';
 
-export const OPEN_MODAL_ORDER = 'OPEN_MODAL_ORDER';
-export const CLOSE_MODAL_ORDER = 'CLOSE_MODAL_ORDER';
-export const MODAL_ORDER_FAILED = 'MODAL_ORDER_FAILED';
+export const OPEN_MODAL_ORDER = 'ORDER/OPEN_MODAL';
+export const CLOSE_MODAL_ORDER = 'ORDER/CLOSE_MODAL';
+export const MODAL_ORDER_FAILED = 'ORDER/MODAL_FAILED';
 
 export const openModalOrder = (order: number) => ({
     type: OPEN_MODAL_ORDER,

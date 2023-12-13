@@ -1,7 +1,7 @@
 import { IIngredient } from '../../utils/types';
 
-export const OPEN_MODAL_INGREDIENTS = 'OPEN_MODAL_INGREDIENTS';
-export const CLOSE_MODAL_INGREDIENTS = 'CLOSE_MODAL_INGREDIENTS';
+export const OPEN_MODAL_INGREDIENTS = 'INGREDIENTS/OPEN_MODAL';
+export const CLOSE_MODAL_INGREDIENTS = 'INGREDIENTS/CLOSE_MODAL';
 
 export const openModalIngredients = (item: IIngredient) => {
     return {
