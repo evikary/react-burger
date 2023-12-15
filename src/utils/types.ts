@@ -33,6 +33,8 @@ export interface IOrder {
 export interface IConstructorAction {
     type: string;
     payload: IIngredient;
+    from: number;
+    to: number;
 }
 
 export interface IStore {

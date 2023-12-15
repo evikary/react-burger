@@ -8,6 +8,8 @@ import Loader from '../loader/loader';
 import { getIngredients } from '../../services/burger-ingredients/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { allItems } from '../../services/burger-ingredients/selector';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 function App() {
     const { load, fail } = useSelector(allItems);
@@ -25,8 +27,10 @@ function App() {
                 <>
                     <AppHeader />
                     <main className={style.main}>
-                        <BurgerIngredients />
-                        <BurgerConstructor />
+                        <DndProvider backend={HTML5Backend}>
+                            <BurgerIngredients />
+                            <BurgerConstructor />
+                        </DndProvider>
                     </main>
                 </>
             )}
