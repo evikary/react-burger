@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { sendLinkIngredients } from '../../utils/ constants';
+import { BURGER_API_URL } from '../../utils/ constants';
 import { IBodyPost } from '../../utils/types';
 
 export const OPEN_MODAL_ORDER = 'ORDER/OPEN_MODAL';
@@ -17,7 +17,7 @@ export const closeModalOrder = () => ({
 
 export function sendIngredients(data: IBodyPost) {
     return function (dispatch: Dispatch) {
-        fetch(sendLinkIngredients, {
+        fetch(`${BURGER_API_URL}/orders`, {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
@@ -26,7 +26,7 @@ export function sendIngredients(data: IBodyPost) {
         })
             .then((res) => {
                 if (!res.ok) {
-                    throw new Error(`Произошла ошибка по адресу ${sendLinkIngredients}, статус ошибки ${res}`);
+                    throw new Error(`Произошла ошибка по адресу ${BURGER_API_URL}/orders, статус ошибки ${res}`);
                 }
 
                 return res.json();

@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { linkIngredients } from '../../utils/ constants';
+import { BURGER_API_URL } from '../../utils/ constants';
 
 export const GET_INGREDIENTS_REQUEST = 'INGREDIENTS/GET_ITEMS_REQUEST';
 export const GET_IINGREDIENTS_SUCCESS = 'INGREDIENTS/GET_ITEMS_SUCCESS';
@@ -10,7 +10,7 @@ export function getIngredients() {
         dispatch({
             type: GET_INGREDIENTS_REQUEST,
         });
-        fetch(linkIngredients)
+        fetch(`${BURGER_API_URL}/ingredients`)
             .then((res) => {
                 if (!res.ok) {
                     throw new Error('Произошла ошибка...');

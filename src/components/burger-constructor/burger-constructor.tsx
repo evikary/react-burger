@@ -30,8 +30,10 @@ function BurgerConstructor() {
     const sendApi = () => {
         if (bun !== null || toppings.length !== 0) {
             const arr = toppings.map((i) => i._id);
+
             if (bun) {
-                arr.push(bun._id, bun._id);
+                arr.unshift(bun._id);
+                arr.push(bun._id);
             }
             dispatch(sendIngredients({ ingredients: arr }));
         }
@@ -50,6 +52,7 @@ function BurgerConstructor() {
     });
 
     const dragBun = canDrop && dragItem && dragItem.type === 'bun';
+    const disabledBtn = !bun ? true : false;
 
     return (
         <section className={style.burger_constructor}>
@@ -99,7 +102,7 @@ function BurgerConstructor() {
                     <span className="text text_type_digits-medium">{getPrice}</span>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button onClick={() => sendApi()} htmlType="button" type="primary" size="large">
+                <Button onClick={() => sendApi()} disabled={disabledBtn} htmlType="button" type="primary" size="large">
                     Оформить заказ
                 </Button>
             </div>
