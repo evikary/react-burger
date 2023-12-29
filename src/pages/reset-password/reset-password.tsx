@@ -1,34 +1,37 @@
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { sendForgotData } from '../../services/api';
 import style from './reset-password.module.css';
 
 function ResetPassword() {
-    const [password, setPassword] = useState('');
-    const [value, setValue] = useState('');
+    const [data, setData] = useState({ password: '', token: '' });
+
     const onChange = (e: any) => {
-        setValue(e.target.value);
-        setPassword(e.target.value);
+        setData({ ...data, [e.target.name]: e.target.value });
     };
+
+    console.log(data);
+
     return (
         <main>
             <section className={style.container}>
                 <h1 className="text text_type_main-medium">Восстановление пароля</h1>
                 <div style={{ display: 'flex', flexDirection: 'column', rowGap: '24px', paddingTop: '24px', paddingBottom: '24px' }}>
-                    <PasswordInput placeholder="Введите новый пароль" onChange={onChange} value={password} name={'password'} extraClass="mb-2" />
+                    <PasswordInput placeholder="Введите новый пароль" onChange={onChange} value={data.password} name={'password'} extraClass="mb-2" />
                     <Input
                         type={'text'}
                         placeholder={'Введите код из письма'}
-                        onChange={(e) => setValue(e.target.value)}
-                        value={value}
-                        name={'name'}
+                        onChange={onChange}
+                        value={data.token}
+                        name={'token'}
                         error={false}
                         errorText={'Ошибка'}
                         size={'default'}
                         extraClass="ml-1"
                     />
                 </div>
-                <Button htmlType="button" type="primary" size="medium">
+                <Button onClick={() => sendForgotData(data)} htmlType="button" type="primary" size="medium">
                     Сохранить
                 </Button>
                 <div style={{ display: 'flex', alignItems: 'center', marginTop: '80px' }}>

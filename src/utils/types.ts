@@ -74,3 +74,13 @@ export interface IModalIngredientsAction {
 export interface IIngredientItem {
     ingredientItem: null | IIngredient;
 }
+
+export interface IUser {
+    email: string;
+    password: string;
+}
+
+export interface ILoginAction {
+    type: string;
+    payload: null | IUser;
+}

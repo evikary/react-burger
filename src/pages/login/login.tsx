@@ -1,15 +1,20 @@
 import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ChangeEvent, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { sendLogin } from '../../services/user/action';
 import style from './login.module.css';
 
 function Login() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [data, setData] = useState({ email: '', password: '' });
+    const dispath: any = useDispatch();
 
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value);
-        setPassword(e.target.value);
+        setData({ ...data, [e.target.name]: e.target.value });
+    };
+
+    const handleClick = () => {
+        dispath(sendLogin(data));
     };
 
     return (
@@ -17,10 +22,10 @@ function Login() {
             <section className={style.container}>
                 <h1 className="text text_type_main-medium">Вход</h1>
                 <div style={{ display: 'flex', flexDirection: 'column', rowGap: '24px', paddingTop: '24px', paddingBottom: '24px' }}>
-                    <EmailInput onChange={onChange} value={email} name={'email'} isIcon={false} />
-                    <PasswordInput onChange={onChange} value={password} name={'password'} extraClass="mb-2" />
+                    <EmailInput onChange={onChange} value={data.email} name={'email'} isIcon={false} />
+                    <PasswordInput onChange={onChange} value={data.password} name={'password'} extraClass="mb-2" />
                 </div>
-                <Button htmlType="button" type="primary" size="medium">
+                <Button onClick={handleClick} htmlType="button" type="primary" size="medium">
                     Войти
                 </Button>
                 <div style={{ display: 'flex', alignItems: 'center', marginTop: '80px' }}>

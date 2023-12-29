@@ -1,17 +1,14 @@
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { sendRegisterData } from '../../services/api';
 import style from './register.module.css';
 
 function Register() {
-    const [value, setValue] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [form, setForm] = useState({ name: '', email: '', password: '' });
 
     const onChange = (e: any) => {
-        setValue(e.target.value);
-        setEmail(e.target.value);
-        setPassword(e.target.value);
+        setForm({ ...form, [e.target.name]: e.target.value });
     };
 
     return (
@@ -19,21 +16,11 @@ function Register() {
             <section className={style.container}>
                 <h1 className="text text_type_main-medium">Регистрация</h1>
                 <div style={{ display: 'flex', flexDirection: 'column', rowGap: '24px', paddingTop: '24px', paddingBottom: '24px' }}>
-                    <Input
-                        type={'text'}
-                        placeholder={'Имя'}
-                        onChange={(e) => setValue(e.target.value)}
-                        value={value}
-                        name={'name'}
-                        error={false}
-                        errorText={'Ошибка'}
-                        size={'default'}
-                        extraClass="ml-1"
-                    />
-                    <EmailInput onChange={onChange} value={email} name={'email'} isIcon={false} />
-                    <PasswordInput onChange={onChange} value={password} name={'password'} extraClass="mb-2" />
+                    <Input type={'text'} placeholder={'Имя'} onChange={onChange} value={form.name} name={'name'} size={'default'} extraClass="ml-1" />
+                    <EmailInput onChange={onChange} value={form.email} name={'email'} isIcon={false} />
+                    <PasswordInput onChange={onChange} value={form.password} name={'password'} extraClass="mb-2" />
                 </div>
-                <Button htmlType="button" type="primary" size="medium">
+                <Button onClick={() => sendRegisterData(form)} htmlType="button" type="primary" size="medium">
                     Зарегистрироваться
                 </Button>
                 <div style={{ display: 'flex', alignItems: 'center', marginTop: '80px' }}>
