@@ -3,11 +3,15 @@ import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-dev
 import Link from '../link/link';
 import style from './app-header.module.css';
 import { useMatch } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../services/user/selector';
 
 function AppHeader() {
     const isConstructor = !!useMatch({ path: '/', end: true });
     const isFeed = !!useMatch({ path: '/feed' });
     const isProfile = !!useMatch({ path: '/profile' });
+    const user = useSelector(selectUser);
+
     return (
         <header className={style.header}>
             <div className={`${style.header_wrapper} pt-4 pb-4`}>
@@ -28,7 +32,7 @@ function AppHeader() {
                 <Logo></Logo>
                 <div className={`${style.profile} pt-4 pb-4 pl-5 pr-5`}>
                     <Link to={'/profile'} isActive={isProfile} img={<ProfileIcon type={isProfile ? 'primary' : 'secondary'} />}>
-                        Личный кабинет
+                        {user ? user.name : 'Личный кабинет'}
                     </Link>
                 </div>
             </div>

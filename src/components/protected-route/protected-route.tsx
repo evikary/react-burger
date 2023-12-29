@@ -15,10 +15,8 @@ function ProtectedRoute({ authOnly = true, component }: IProps) {
     if (!isAuthChecked) {
         return null;
     }
-    console.log('authOnly', authOnly);
-    console.log('user', user);
+
     if (authOnly && !user) {
-        console.log('authOnly && !user');
         return <Navigate to="/login" state={{ from: location }} />;
     }
 
