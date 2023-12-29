@@ -50,6 +50,10 @@ export interface IStore {
     ingredientModal: {
         ingredientItem: null | IIngredient;
     };
+    auth: {
+        user: IUser;
+        isAuthChecked: boolean;
+    };
 }
 
 export interface IIngredientsAction {

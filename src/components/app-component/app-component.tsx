@@ -14,6 +14,7 @@ import ResetPassword from '../../pages/reset-password/reset-password';
 import Profile from '../../pages/profile/profile';
 import NotFound from '../../pages/not-found/not-found';
 import { checkAuth } from '../../services/user/action';
+import { OnlyAuth, OnlyUnAuth } from '../protected-route/protected-route';
 
 function App() {
     const { load, fail } = useSelector(allItems);
@@ -33,11 +34,16 @@ function App() {
                     <AppHeader />
                     <Routes>
                         <Route path="/" element={<Home />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/register" element={<Register />} />
-                        <Route path="/forgot-password" element={<ForgotPassword />} />
-                        <Route path="/reset-password" element={<ResetPassword />} />
-                        <Route path="/profile" element={<Profile />} />
+                        {/* <Route path="/login" element={<Login />} /> */}
+                        <Route path="/login" element={<OnlyUnAuth component={<Login />} />} />
+                        {/* <Route path="/register" element={<Register />} /> */}
+                        <Route path="/register" element={<OnlyUnAuth component={<Register />} />} />
+                        {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
+                        <Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPassword />} />} />
+                        {/* <Route path="/reset-password" element={<ResetPassword />} /> */}
+                        <Route path="/reset-password" element={<OnlyUnAuth component={<ResetPassword />} />} />
+                        {/* <Route path="/profile" element={<Profile />} /> */}
+                        <Route path="/profile" element={<OnlyAuth component={<Profile />} />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </>
