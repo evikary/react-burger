@@ -12,8 +12,6 @@ function ForgotPassword() {
         setData({ ...data, [e.target.name]: e.target.value });
     };
 
-    console.log(data);
-
     const handleClick = () => {
         navigate('/login');
     };

@@ -11,8 +11,6 @@ function ResetPassword() {
         setData({ ...data, [e.target.name]: e.target.value });
     };
 
-    console.log(data);
-
     return (
         <main>
             <section className={style.container}>
