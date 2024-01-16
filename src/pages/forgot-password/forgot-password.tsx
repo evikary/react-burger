@@ -16,6 +16,13 @@ function ForgotPassword() {
         navigate('/login');
     };
 
+    const recoverPassword = async () => {
+        const res = await sendForgotData(data);
+        if ((res.message = 'Reset email sent')) {
+            navigate('/reset-password');
+        }
+    };
+
     return (
         <main>
             <section className={style.container}>
@@ -23,7 +30,7 @@ function ForgotPassword() {
                 <div style={{ display: 'flex', flexDirection: 'column', rowGap: '24px', paddingTop: '24px', paddingBottom: '24px' }}>
                     <EmailInput placeholder="Укажите e-mail" onChange={onChange} value={data.email} name={'email'} isIcon={false} />
                 </div>
-                <Button onClick={() => sendForgotData(data)} htmlType="button" type="primary" size="medium">
+                <Button onClick={recoverPassword} htmlType="button" type="primary" size="medium">
                     Восстановить
                 </Button>
                 <div style={{ display: 'flex', alignItems: 'center', marginTop: '80px' }}>

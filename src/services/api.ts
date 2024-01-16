@@ -75,7 +75,7 @@ export const sendLoginData = (loginForm: any) => {
 };
 
 export const resetForgotData = (forgotForm: any) => {
-    return fetch(`${BURGER_API_URL}/password-reset`, {
+    return fetch(`${BURGER_API_URL}/password-reset/reset`, {
         method: 'POST',
         body: JSON.stringify(forgotForm),
         headers: {
@@ -92,7 +92,7 @@ export const resetForgotData = (forgotForm: any) => {
 };
 
 export const sendForgotData = (forgotForm: any) => {
-    return fetch(`${BURGER_API_URL}/password-reset/reset`, {
+    return fetch(`${BURGER_API_URL}/password-reset`, {
         method: 'POST',
         body: JSON.stringify(forgotForm),
         headers: {
@@ -128,6 +128,7 @@ export const updateUserApi = async (forgotForm: any) => {
             method: 'PATCH',
             body: JSON.stringify(forgotForm),
             headers: {
+                'Content-Type': 'application/json',
                 authorization: localStorage.getItem('accessToken'),
             },
         });

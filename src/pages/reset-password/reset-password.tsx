@@ -1,14 +1,27 @@
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { sendForgotData } from '../../services/api';
+import { Link, useNavigate } from 'react-router-dom';
+import { resetForgotData } from '../../services/api';
 import style from './reset-password.module.css';
 
 function ResetPassword() {
     const [data, setData] = useState({ password: '', token: '' });
+    const [fail, setFail] = useState('');
+    const navigate = useNavigate();
 
     const onChange = (e: any) => {
         setData({ ...data, [e.target.name]: e.target.value });
+    };
+
+    const resetForm = async () => {
+        try {
+            const res = await resetForgotData(data);
+            if (res.message === 'Password successfully reset') {
+                navigate('/login');
+            }
+        } catch (err: any) {
+            setFail(err.message);
+        }
     };
 
     return (
@@ -29,7 +42,8 @@ function ResetPassword() {
                         extraClass="ml-1"
                     />
                 </div>
-                <Button onClick={() => sendForgotData(data)} htmlType="button" type="primary" size="medium">
+                {fail && <p className={`${style.faile} text_type_main-default mb-3`}>Вы ввели неверный код!</p>}
+                <Button onClick={resetForm} htmlType="button" type="primary" size="medium">
                     Сохранить
                 </Button>
                 <div style={{ display: 'flex', alignItems: 'center', marginTop: '80px' }}>
