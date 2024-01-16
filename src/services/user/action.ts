@@ -1,7 +1,11 @@
 import { Dispatch } from 'redux';
-import { getUserApi, logoutRequest, sendLoginData, updateUserApi } from '../api';
+import { getUserApi, logoutRequest, sendLoginData, sendRegisterData, updateUserApi } from '../api';
 
 export const AUTH_CHECKED = 'AUTH/CHECKED';
+
+export const REGISTER_USER_STARTED = 'REGISTER/USER/STARTED';
+export const REGISTER_USER_SUCCESS = 'REGISTER/USER/SUCCESS';
+export const REGISTER_USER_FAILED = 'REGISTER/USER/FAILED';
 
 export const SEND_LOGIN_STARTED = 'SEND/LOGIN/STARTED';
 export const SEND_LOGIN_SUCCESS = 'SEND/LOGIN/SUCCESS';
@@ -49,7 +53,7 @@ export function sendLogin(data: any) {
                 localStorage.setItem('refreshToken', data.refreshToken);
             })
             .catch((error) => {
-                dispatch({ type: SEND_LOGIN_FAILED });
+                dispatch({ type: SEND_LOGIN_FAILED, payload: error.message });
             });
     };
 }
@@ -77,6 +81,19 @@ export function updateUser(forgotForm: any) {
             })
             .catch((error) => {
                 dispatch({ type: UPDATE_FORM_FAILED });
+            });
+    };
+}
+
+export function registerUser(forgotForm: any) {
+    return function (dispatch: Dispatch) {
+        dispatch({ type: REGISTER_USER_STARTED });
+        sendRegisterData(forgotForm)
+            .then((data) => {
+                dispatch({ type: REGISTER_USER_SUCCESS, payload: data.user });
+            })
+            .catch((error) => {
+                dispatch({ type: REGISTER_USER_FAILED, payload: error.message });
             });
     };
 }

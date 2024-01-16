@@ -1,11 +1,13 @@
 import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ChangeEvent, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { sendLogin } from '../../services/user/action';
+import { selectLoginError } from '../../services/user/selector';
 import style from './login.module.css';
 
 function Login() {
+    const loginFailed = useSelector(selectLoginError);
     const [data, setData] = useState({ email: '', password: '' });
     const dispath: any = useDispatch();
 
@@ -25,6 +27,7 @@ function Login() {
                     <EmailInput onChange={onChange} value={data.email} name={'email'} isIcon={false} />
                     <PasswordInput onChange={onChange} value={data.password} name={'password'} extraClass="mb-2" />
                 </div>
+                {loginFailed && <p className={`${style.faile} text_type_main-default mb-3`}>Вы ввели неверный пароль!</p>}
                 <Button onClick={handleClick} htmlType="button" type="primary" size="medium">
                     Войти
                 </Button>

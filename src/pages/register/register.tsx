@@ -1,14 +1,22 @@
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { sendRegisterData } from '../../services/api';
+import { registerUser } from '../../services/user/action';
+import { selectRegisterError } from '../../services/user/selector';
 import style from './register.module.css';
 
 function Register() {
+    const registerError = useSelector(selectRegisterError);
     const [form, setForm] = useState({ name: '', email: '', password: '' });
+    const dispatch: any = useDispatch();
 
     const onChange = (e: any) => {
         setForm({ ...form, [e.target.name]: e.target.value });
+    };
+
+    const registerFormUser = () => {
+        dispatch(registerUser(form));
     };
 
     return (
@@ -20,7 +28,8 @@ function Register() {
                     <EmailInput onChange={onChange} value={form.email} name={'email'} isIcon={false} />
                     <PasswordInput onChange={onChange} value={form.password} name={'password'} extraClass="mb-2" />
                 </div>
-                <Button onClick={() => sendRegisterData(form)} htmlType="button" type="primary" size="medium">
+                {registerError && <p className={`${style.faile} text_type_main-default mb-3`}>Этот пользователь уже зарегестрирован!</p>}
+                <Button onClick={registerFormUser} htmlType="button" type="primary" size="medium">
                     Зарегистрироваться
                 </Button>
                 <div style={{ display: 'flex', alignItems: 'center', marginTop: '80px' }}>

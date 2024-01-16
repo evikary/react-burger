@@ -53,6 +53,12 @@ export interface IStore {
     auth: {
         user: IUser;
         isAuthChecked: boolean;
+        registerUserError: null | string;
+        registerUserRequest: boolean;
+        loginUserError: null | string;
+        loginUserRequest: boolean;
+        updateUserError: null;
+        updateUserRequest: boolean;
     };
 }
 

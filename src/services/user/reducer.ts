@@ -1,6 +1,9 @@
 import { ILoginAction } from '../../utils/types';
 import {
     AUTH_CHECKED,
+    REGISTER_USER_FAILED,
+    REGISTER_USER_STARTED,
+    REGISTER_USER_SUCCESS,
     SEND_LOGIN_FAILED,
     SEND_LOGIN_STARTED,
     SEND_LOGIN_SUCCESS,
@@ -14,6 +17,12 @@ const initialState = {
     user: null,
     isAuthChecked: false,
 
+    registerUserError: null,
+    registerUserRequest: false,
+
+    loginUserError: null,
+    loginUserRequest: false,
+
     updateUserError: null,
     updateUserRequest: false,
 };
@@ -26,17 +35,44 @@ export function userReducer(state = initialState, action: ILoginAction) {
                 ...state,
                 isAuthChecked: true,
             };
+        case REGISTER_USER_STARTED:
+            return {
+                ...state,
+                registerUserError: null,
+                registerUserRequest: true,
+            };
+        case REGISTER_USER_SUCCESS:
+            return {
+                ...state,
+                registerUserError: null,
+                registerUserRequest: false,
+                user: payload,
+            };
+        case REGISTER_USER_FAILED:
+            return {
+                ...state,
+                registerUserError: payload,
+                updateUserRequest: false,
+            };
         case SEND_LOGIN_STARTED:
             return {
                 ...state,
+                loginUserError: null,
+                loginUserRequest: true,
             };
         case SEND_LOGIN_SUCCESS:
             return {
                 ...state,
+                loginUserError: null,
+                loginUserRequest: false,
                 user: payload,
             };
         case SEND_LOGIN_FAILED:
-            return initialState;
+            return {
+                ...state,
+                loginUserError: payload,
+                loginUserRequest: false,
+            };
         case SEND_LOGOUT_SUCCESS:
             return {
                 ...state,
