@@ -1,5 +1,5 @@
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { resetForgotData } from '../../services/api';
 import style from './reset-password.module.css';
@@ -13,10 +13,17 @@ function ResetPassword() {
         setData({ ...data, [e.target.name]: e.target.value });
     };
 
+    useEffect(() => {
+        if (localStorage.getItem('reset-password') !== 'approve') {
+            navigate('/');
+        }
+    }, []);
+
     const resetForm = async () => {
         try {
             const res = await resetForgotData(data);
             if (res.message === 'Password successfully reset') {
+                localStorage.removeItem('reset-password');
                 navigate('/login');
             }
         } catch (err: any) {

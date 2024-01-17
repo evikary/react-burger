@@ -19,6 +19,7 @@ function ForgotPassword() {
     const recoverPassword = async () => {
         const res = await sendForgotData(data);
         if ((res.message = 'Reset email sent')) {
+            localStorage.setItem('reset-password', 'approve');
             navigate('/reset-password');
         }
     };

@@ -10,17 +10,16 @@ interface IProps {
     id: string;
     ingredients: IIngredient[];
     children: React.ReactNode;
-    onClick: (item: IIngredient) => void;
 }
 
-function IngredientsСategory({ refCategory, id, ingredients, children, onClick }: IProps) {
+function IngredientsСategory({ refCategory, id, ingredients, children }: IProps) {
     const counter = useSelector(getIngredientsCounter);
     return (
         <div ref={refCategory} id={id} className="pb-10">
             <h2 className="text text_type_main-medium">{children}</h2>
             <ul className={`${style.container} pt-6 pl-4 pr-4`}>
                 {ingredients.map((item) => {
-                    return <IngredientDetail key={item._id} ingredient={item} onClick={onClick} counter={counter[item._id]} />;
+                    return <IngredientDetail key={item._id} ingredient={item} counter={counter[item._id]} />;
                 })}
             </ul>
         </div>

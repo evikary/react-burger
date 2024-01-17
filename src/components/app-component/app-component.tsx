@@ -5,7 +5,7 @@ import Loader from '../loader/loader';
 import { getIngredients } from '../../services/burger-ingredients/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { allItems } from '../../services/burger-ingredients/selector';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import Home from '../../pages/home/home';
 import Login from '../../pages/login/login';
 import Register from '../../pages/register/register';
@@ -18,10 +18,14 @@ import { OnlyAuth, OnlyUnAuth } from '../protected-route/protected-route';
 import Feed from '../../pages/feed/feed';
 import ProfileEdit from '../profile-edit/profile-edit';
 import Orders from '../orders/orders';
+import Modal from '../modal/modal';
+import ModalIngredientsDetails from '../modal-ingredients-details/modal-igredients-details';
 
 function App() {
     const { load, fail } = useSelector(allItems);
     const dispatch: any = useDispatch();
+    const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(getIngredients());
@@ -35,7 +39,7 @@ function App() {
             {!fail && !load && (
                 <>
                     <AppHeader />
-                    <Routes>
+                    <Routes location={location.state?.backgroundLocation || location}>
                         <Route path="/" element={<Home />} />
                         <Route path="/login" element={<OnlyUnAuth component={<Login />} />} />
                         <Route path="/register" element={<OnlyUnAuth component={<Register />} />} />
@@ -46,8 +50,21 @@ function App() {
                             <Route path="orders" element={<OnlyAuth component={<Orders />} />} />
                         </Route>
                         <Route path="/feed" element={<Feed />} />
+                        <Route path="/ingredients/:id" element={<ModalIngredientsDetails />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
+                    {location.state?.backgroundLocation && (
+                        <Routes>
+                            <Route
+                                path="/ingredients/:id"
+                                element={
+                                    <Modal onClose={() => navigate(-1)}>
+                                        <ModalIngredientsDetails />
+                                    </Modal>
+                                }
+                            />
+                        </Routes>
+                    )}
                 </>
             )}
         </>
