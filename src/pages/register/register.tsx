@@ -1,5 +1,5 @@
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { registerUser } from '../../services/user/action';
@@ -11,7 +11,7 @@ function Register() {
     const [form, setForm] = useState({ name: '', email: '', password: '' });
     const dispatch: any = useDispatch();
 
-    const onChange = (e: any) => {
+    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 

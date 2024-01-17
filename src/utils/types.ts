@@ -94,3 +94,23 @@ export interface ILoginAction {
     type: string;
     payload: null | IUser;
 }
+
+export interface IFormLogin {
+    email: string;
+    password: string;
+}
+
+export interface IFormRegister {
+    name: string;
+    email: string;
+    password: string;
+}
+
+export interface IFormResetPassword {
+    password: string;
+    token: string;
+}
+
+export interface IFormForgotData {
+    email: string;
+}

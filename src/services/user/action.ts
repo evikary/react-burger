@@ -1,4 +1,5 @@
 import { Dispatch } from 'redux';
+import { IFormLogin, IFormRegister } from '../../utils/types';
 import { getUserApi, logoutRequest, sendLoginData, sendRegisterData, updateUserApi } from '../api';
 
 export const AUTH_CHECKED = 'AUTH/CHECKED';
@@ -38,12 +39,12 @@ export function getUser(token: string): any {
                 dispatch({ type: SEND_LOGIN_SUCCESS, payload: data.user });
             })
             .catch((error) => {
-                // dispatch({ type: SEND_LOGIN_FAILED });
+                dispatch({ type: SEND_LOGIN_FAILED, payload: error.message });
             });
     };
 }
 
-export function sendLogin(data: any) {
+export function sendLogin(data: IFormLogin) {
     return function (dispatch: Dispatch) {
         dispatch({ type: SEND_LOGIN_STARTED });
         sendLoginData(data)
@@ -66,13 +67,11 @@ export function sendLogout() {
                 localStorage.removeItem('refreshToken');
                 dispatch({ type: SEND_LOGOUT_SUCCESS });
             })
-            .catch((error) => {
-                // dispatch({ type: SEND_LOGOUT_FAILED });
-            });
+            .catch((error) => {});
     };
 }
 
-export function updateUser(forgotForm: any) {
+export function updateUser(forgotForm: IFormRegister) {
     return function (dispatch: Dispatch) {
         dispatch({ type: UPDATE_FORM_STARTED });
         updateUserApi(forgotForm)
@@ -80,12 +79,12 @@ export function updateUser(forgotForm: any) {
                 dispatch({ type: UPDATE_FORM_SUCCESS, payload: data.user });
             })
             .catch((error) => {
-                dispatch({ type: UPDATE_FORM_FAILED });
+                dispatch({ type: UPDATE_FORM_FAILED, payload: error.message });
             });
     };
 }
 
-export function registerUser(forgotForm: any) {
+export function registerUser(forgotForm: IFormRegister) {
     return function (dispatch: Dispatch) {
         dispatch({ type: REGISTER_USER_STARTED });
         sendRegisterData(forgotForm)

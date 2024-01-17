@@ -1,4 +1,5 @@
 import { BURGER_API_URL } from '../utils/ constants';
+import { IBodyPost, IFormForgotData, IFormLogin, IFormRegister, IFormResetPassword } from '../utils/types';
 
 const checkResponse = async (res: Response) => {
     const json = await res.json();
@@ -40,7 +41,7 @@ export const fetchWithRefresh = async (url: string, options: any) => {
     }
 };
 
-export const sendRegisterData = (dataForm: any) => {
+export const sendRegisterData = (dataForm: IFormRegister) => {
     return fetch(`${BURGER_API_URL}/auth/register`, {
         method: 'POST',
         body: JSON.stringify(dataForm),
@@ -57,7 +58,7 @@ export const sendRegisterData = (dataForm: any) => {
         });
 };
 
-export const sendLoginData = (loginForm: any) => {
+export const sendLoginData = (loginForm: IFormLogin) => {
     return fetch(`${BURGER_API_URL}/auth/login`, {
         method: 'POST',
         body: JSON.stringify(loginForm),
@@ -74,7 +75,7 @@ export const sendLoginData = (loginForm: any) => {
         });
 };
 
-export const resetForgotData = (forgotForm: any) => {
+export const resetForgotData = (forgotForm: IFormResetPassword) => {
     return fetch(`${BURGER_API_URL}/password-reset/reset`, {
         method: 'POST',
         body: JSON.stringify(forgotForm),
@@ -91,7 +92,7 @@ export const resetForgotData = (forgotForm: any) => {
         });
 };
 
-export const sendForgotData = (forgotForm: any) => {
+export const sendForgotData = (forgotForm: IFormForgotData) => {
     return fetch(`${BURGER_API_URL}/password-reset`, {
         method: 'POST',
         body: JSON.stringify(forgotForm),
@@ -122,7 +123,7 @@ export const getUserApi = async (token: string) => {
     }
 };
 
-export const updateUserApi = async (forgotForm: any) => {
+export const updateUserApi = async (forgotForm: IFormForgotData) => {
     try {
         const response = await fetchWithRefresh(BURGER_API_URL + '/auth/user', {
             method: 'PATCH',
@@ -147,6 +148,22 @@ export const logoutRequest = async () => {
             },
             body: JSON.stringify({ token: localStorage.getItem('refreshToken') }),
         });
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};
+
+export const createOrder = async (data: IBodyPost) => {
+    try {
+        const response = await fetchWithRefresh(`${BURGER_API_URL}/orders`, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: localStorage.getItem('accessToken'),
+            },
+        });
+        return response;
     } catch (error) {
         return Promise.reject(error);
     }

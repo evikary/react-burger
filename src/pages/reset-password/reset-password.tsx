@@ -1,5 +1,5 @@
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { resetForgotData } from '../../services/api';
 import style from './reset-password.module.css';
@@ -9,7 +9,7 @@ function ResetPassword() {
     const [fail, setFail] = useState('');
     const navigate = useNavigate();
 
-    const onChange = (e: any) => {
+    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
         setData({ ...data, [e.target.name]: e.target.value });
     };
 

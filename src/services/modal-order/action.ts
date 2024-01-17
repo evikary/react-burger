@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
-import { BURGER_API_URL } from '../../utils/ constants';
 import { IBodyPost } from '../../utils/types';
+import { createOrder } from '../api';
 
 export const OPEN_MODAL_ORDER = 'ORDER/OPEN_MODAL';
 export const CLOSE_MODAL_ORDER = 'ORDER/CLOSE_MODAL';
@@ -17,20 +17,7 @@ export const closeModalOrder = () => ({
 
 export function sendIngredients(data: IBodyPost) {
     return function (dispatch: Dispatch) {
-        fetch(`${BURGER_API_URL}/orders`, {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-            .then((res) => {
-                if (!res.ok) {
-                    throw new Error(`Произошла ошибка по адресу ${BURGER_API_URL}/orders, статус ошибки ${res}`);
-                }
-
-                return res.json();
-            })
+        createOrder(data)
             .then((json) => {
                 dispatch(openModalOrder(json.order.number));
             })

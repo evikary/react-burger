@@ -1,5 +1,5 @@
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../../services/user/action';
 import { selectUser } from '../../services/user/selector';
@@ -10,7 +10,7 @@ function ProfileEdit() {
     const dispatch: any = useDispatch();
     const [form, setForm] = useState({ name: user.name || '', email: user.email || '', password: '' });
 
-    const handleChangeForm = (e: any) => {
+    const handleChangeForm = (e: ChangeEvent<HTMLInputElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 

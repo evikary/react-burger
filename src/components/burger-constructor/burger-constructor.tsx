@@ -11,11 +11,15 @@ import { closeModalOrder, sendIngredients } from '../../services/modal-order/act
 import React, { useMemo } from 'react';
 import { useDrop } from 'react-dnd';
 import ToppingsConstructor from '../toppings-conctuctor/toppings-conctructor';
+import { selectUser } from '../../services/user/selector';
+import { useNavigate } from 'react-router-dom';
 
 function BurgerConstructor() {
+    const user = useSelector(selectUser);
     const { bun, toppings } = useSelector(allIngredients);
     const number = useSelector(getOrderModal);
     const dispatch: any = useDispatch();
+    const navigate = useNavigate();
 
     const getPrice = useMemo(() => {
         const res = toppings.map((i) => i.price).reduce((acc, item) => acc + item, 0);
@@ -28,6 +32,11 @@ function BurgerConstructor() {
     };
 
     const sendApi = () => {
+        if (!user) {
+            navigate('/login');
+            return;
+        }
+
         if (bun !== null || toppings.length !== 0) {
             const arr = toppings.map((i) => i._id);
 

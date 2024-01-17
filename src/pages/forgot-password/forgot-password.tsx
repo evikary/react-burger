@@ -1,5 +1,5 @@
 import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { sendForgotData } from '../../services/api';
 import style from './forgot-password.module.css';
@@ -8,7 +8,7 @@ function ForgotPassword() {
     const [data, setData] = useState({ email: '' });
     const navigate = useNavigate();
 
-    const onChange = (e: any) => {
+    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
         setData({ ...data, [e.target.name]: e.target.value });
     };
 
