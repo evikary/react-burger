@@ -23,7 +23,7 @@ function Register() {
         <main>
             <section className={style.container}>
                 <h1 className="text text_type_main-medium">Регистрация</h1>
-                <div style={{ display: 'flex', flexDirection: 'column', rowGap: '24px', paddingTop: '24px', paddingBottom: '24px' }}>
+                <div className={style.boxInputs}>
                     <Input type={'text'} placeholder={'Имя'} onChange={onChange} value={form.name} name={'name'} size={'default'} extraClass="ml-1" />
                     <EmailInput onChange={onChange} value={form.email} name={'email'} isIcon={false} />
                     <PasswordInput onChange={onChange} value={form.password} name={'password'} extraClass="mb-2" />
@@ -32,7 +32,7 @@ function Register() {
                 <Button onClick={registerFormUser} htmlType="button" type="primary" size="medium">
                     Зарегистрироваться
                 </Button>
-                <div style={{ display: 'flex', alignItems: 'center', marginTop: '80px' }}>
+                <div className={`pt-20 ${style.boxBtns}`}>
                     <p className={`text text_type_main-default text_color_inactive ${style.text}`}>Уже зарегистрированы?</p>
                     <Link to="/login">
                         <Button htmlType="button" type="secondary" size="medium">

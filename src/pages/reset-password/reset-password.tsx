@@ -35,7 +35,7 @@ function ResetPassword() {
         <main>
             <section className={style.container}>
                 <h1 className="text text_type_main-medium">Восстановление пароля</h1>
-                <div style={{ display: 'flex', flexDirection: 'column', rowGap: '24px', paddingTop: '24px', paddingBottom: '24px' }}>
+                <div className={style.boxInputs}>
                     <PasswordInput placeholder="Введите новый пароль" onChange={onChange} value={data.password} name={'password'} extraClass="mb-2" />
                     <Input
                         type={'text'}
@@ -53,7 +53,7 @@ function ResetPassword() {
                 <Button onClick={resetForm} htmlType="button" type="primary" size="medium">
                     Сохранить
                 </Button>
-                <div style={{ display: 'flex', alignItems: 'center', marginTop: '80px' }}>
+                <div className={`pt-20 ${style.boxBtns}`}>
                     <p className={`text text_type_main-default text_color_inactive ${style.text}`}>Вспомнили пароль?</p>
                     <Link to="/login">
                         <Button htmlType="button" type="secondary" size="medium">
