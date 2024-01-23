@@ -1,49 +1,70 @@
-import React, { useEffect, useState } from 'react';
-import style from './app-component.module.css';
+import React, { useEffect } from 'react';
 import AppHeader from '../app-header/app-header';
-import BurgerIngredients from '../burger-ingredients/burger-ingredients';
-import BurgerConstructor from '../burger-constructor/burger-constructor';
-import { linkIngredients } from '../../utils/ constants';
 import ErrorAPI from '../error-api/error-api';
 import Loader from '../loader/loader';
+import { getIngredients } from '../../services/burger-ingredients/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { allItems } from '../../services/burger-ingredients/selector';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import Home from '../../pages/home/home';
+import Login from '../../pages/login/login';
+import Register from '../../pages/register/register';
+import ForgotPassword from '../../pages/forgot-password/forgot-password';
+import ResetPassword from '../../pages/reset-password/reset-password';
+import Profile from '../../pages/profile/profile';
+import NotFound from '../../pages/not-found/not-found';
+import { checkAuth } from '../../services/user/action';
+import { OnlyAuth, OnlyUnAuth } from '../protected-route/protected-route';
+import Feed from '../../pages/feed/feed';
+import ProfileEdit from '../profile-edit/profile-edit';
+import Orders from '../orders/orders';
+import Modal from '../modal/modal';
+import ModalIngredientsDetails from '../modal-ingredients-details/modal-igredients-details';
 
 function App() {
-    const [data, setData] = useState([]);
-    const [error, setError] = useState(false);
-    const [load, setLoad] = useState(true);
-
-    const getIngredients = async (url: string) => {
-        try {
-            const response = await fetch(url);
-
-            if (!response.ok) {
-                throw new Error('Произошла ошибка...');
-            }
-
-            const json = await response.json();
-            setData(json.data);
-            setLoad(false);
-        } catch (error) {
-            setError(true);
-            setLoad(false);
-        }
-    };
+    const { load, fail } = useSelector(allItems);
+    const dispatch: any = useDispatch();
+    const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        getIngredients(linkIngredients);
+        dispatch(getIngredients());
+        dispatch(checkAuth());
     }, []);
 
     return (
         <>
             {load && <Loader />}
-            {error && !load && <ErrorAPI>Сервис не работает! Попробуйте немного позже...</ErrorAPI>}
-            {!error && !load && (
+            {fail && !load && <ErrorAPI>Сервис не работает! Попробуйте немного позже...</ErrorAPI>}
+            {!fail && !load && (
                 <>
                     <AppHeader />
-                    <main className={style.main}>
-                        <BurgerIngredients data={data} />
-                        <BurgerConstructor data={data} />
-                    </main>
+                    <Routes location={location.state?.backgroundLocation || location}>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/login" element={<OnlyUnAuth component={<Login />} />} />
+                        <Route path="/register" element={<OnlyUnAuth component={<Register />} />} />
+                        <Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPassword />} />} />
+                        <Route path="/reset-password" element={<OnlyUnAuth component={<ResetPassword />} />} />
+                        <Route path="/profile" element={<OnlyAuth component={<Profile />} />}>
+                            <Route index element={<OnlyAuth component={<ProfileEdit />} />} />
+                            <Route path="orders" element={<OnlyAuth component={<Orders />} />} />
+                        </Route>
+                        <Route path="/feed" element={<Feed />} />
+                        <Route path="/ingredients/:id" element={<ModalIngredientsDetails />} />
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                    {location.state?.backgroundLocation && (
+                        <Routes>
+                            <Route
+                                path="/ingredients/:id"
+                                element={
+                                    <Modal onClose={() => navigate(-1)}>
+                                        <ModalIngredientsDetails />
+                                    </Modal>
+                                }
+                            />
+                        </Routes>
+                    )}
                 </>
             )}
         </>

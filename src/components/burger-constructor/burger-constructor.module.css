@@ -12,6 +12,12 @@
     overflow-y: scroll;
 }
 
+.containerBlue {
+    width: 600px;
+    height: 696px;
+    border: 2px solid #14b0e4;
+}
+
 .info {
     display: flex;
     column-gap: 40px;
@@ -28,4 +34,47 @@
 .box svg:nth-child(2) {
     width: 36px;
     height: 36px;
+}
+
+.stopper {
+    margin-left: 32px;
+    composes: constructor-element from global;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+}
+
+.stopperBunTop {
+    display: flex;
+    width: 536px;
+    height: 80px;
+    padding: 16px 32px 16px 24px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 88px 88px 40px 40px;
+    border: 0.5px dashed #e414dd;
+    margin: 0 0 16px 32px;
+}
+
+.stopperBunBottom {
+    display: flex;
+    width: 536px;
+    height: 80px;
+    padding: 16px 32px 16px 24px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 40px 40px 88px 88px;
+    border: 0.5px dashed #e414dd;
+    margin: 16px 0 0 32px;
+}
+
+.active {
+    outline: 2px solid #9111a5;
+}
+
+.active2 {
+    border: 0.5px solid #9111a5;
 }

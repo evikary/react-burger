@@ -1,57 +1,127 @@
 import style from './burger-constructor.module.css';
-import { ConstructorElement, DragIcon, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IIngredient } from '../../utils/types';
 import Modal from '../modal/modal';
-import { useMemo, useState } from 'react';
 import OrderDetails from '../order-details/order-details';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeIngredient, addIngredient } from '../../services/constructor-ingredients/actions';
+import { allIngredients } from '../../services/constructor-ingredients/selector';
+import { getOrderModal } from '../../services/modal-order/selector';
+import { closeModalOrder, sendIngredients } from '../../services/modal-order/action';
+import React, { useMemo } from 'react';
+import { useDrop } from 'react-dnd';
+import ToppingsConstructor from '../toppings-conctuctor/toppings-conctructor';
+import { selectUser } from '../../services/user/selector';
+import { useNavigate } from 'react-router-dom';
 
-interface IProps {
-    data: IIngredient[];
-}
+function BurgerConstructor() {
+    const user = useSelector(selectUser);
+    const { bun, toppings } = useSelector(allIngredients);
+    const number = useSelector(getOrderModal);
+    const dispatch: any = useDispatch();
+    const navigate = useNavigate();
 
-function BurgerConstructor({ data }: IProps) {
-    const [open, setOpen] = useState(false);
-    const bun = useMemo(() => data.filter((item) => item.type === 'bun')[0], [data]);
-    const toppings = useMemo(() => data.filter((item) => item.type !== 'bun'), [data]);
+    const getPrice = useMemo(() => {
+        const res = toppings.map((i) => i.price).reduce((acc, item) => acc + item, 0);
+        const price = bun !== null ? bun?.price * 2 + res : res;
+        return price;
+    }, [bun, toppings]);
+
+    const removeElement = (item: IIngredient) => {
+        dispatch(removeIngredient(item));
+    };
+
+    const sendApi = () => {
+        if (!user) {
+            navigate('/login');
+            return;
+        }
+
+        if (bun !== null || toppings.length !== 0) {
+            const arr = toppings.map((i) => i._id);
+
+            if (bun) {
+                arr.unshift(bun._id);
+                arr.push(bun._id);
+            }
+            dispatch(sendIngredients({ ingredients: arr }));
+        }
+    };
+
+    const [{ isOver, dragItem, canDrop }, dropTarget] = useDrop({
+        accept: 'ingredient',
+        drop(ingredient: IIngredient) {
+            dispatch(addIngredient(ingredient));
+        },
+        collect: (monitor) => ({
+            canDrop: monitor.canDrop(),
+            dragItem: monitor.getItem(),
+            isOver: monitor.isOver(),
+        }),
+    });
+
+    const dragBun = canDrop && dragItem && dragItem.type === 'bun';
+    const disabledBtn = !bun ? true : false;
 
     return (
         <section className={style.burger_constructor}>
-            {bun !== undefined && (
-                <div className="ml-8 mb-4">
-                    <ConstructorElement type="top" isLocked={true} text={`${bun.name} (верх)`} price={bun.price} thumbnail={bun.image_mobile} />
-                </div>
-            )}
-            <div className={style.container}>
-                {toppings.map((item) => {
-                    return (
-                        <div className={style.box} key={item._id}>
-                            <DragIcon type="primary" />
-                            <ConstructorElement text={item.name} price={item.price} thumbnail={item.image_mobile} />
+            <div ref={dropTarget}>
+                {bun !== null ? (
+                    <div className={`ml-8 mb-4`}>
+                        <ConstructorElement
+                            extraClass={(dragBun && isOver && style.active) || ''}
+                            type="top"
+                            isLocked={true}
+                            text={`${bun.name} (верх)`}
+                            price={bun.price}
+                            thumbnail={bun.image_mobile}
+                        />
+                    </div>
+                ) : (
+                    <div className={`${style.stopperBunTop}  ${dragBun && isOver && style.active} text text_type_main-medium`}>Выберите булку</div>
+                )}
+                <div className={`${style.container}`}>
+                    {toppings.length !== 0 ? (
+                        toppings.map((item, index) => {
+                            return <ToppingsConstructor key={item.key} item={item} index={index} handleClose={() => removeElement(item)} />;
+                        })
+                    ) : (
+                        <div className={`${style.stopper} ${!dragBun && isOver && style.active2} text text_type_main-medium`}>
+                            Выберите начинку для вашего бургера
                         </div>
-                    );
-                })}
-            </div>
-            {bun !== undefined && (
-                <div className="mt-4 ml-8">
-                    <ConstructorElement type="bottom" isLocked={true} text={`${bun.name} (низ)`} price={bun.price} thumbnail={bun.image_mobile} />
+                    )}
                 </div>
-            )}
+                {bun !== null ? (
+                    <div className={`mt-4 ml-8`}>
+                        <ConstructorElement
+                            extraClass={(dragBun && isOver && style.active) || ''}
+                            type="bottom"
+                            isLocked={true}
+                            text={`${bun.name} (низ)`}
+                            price={bun.price}
+                            thumbnail={bun.image_mobile}
+                        />
+                    </div>
+                ) : (
+                    <div className={`${style.stopperBunBottom} ${dragBun && isOver && style.active} text text_type_main-medium`}>Выберите булку</div>
+                )}
+            </div>
             <div className={`${style.info} mt-10 mr-4`}>
                 <div className={style.box}>
-                    <span className="text text_type_digits-medium">610</span>
+                    <span className="text text_type_digits-medium">{getPrice}</span>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button onClick={() => setOpen(true)} htmlType="button" type="primary" size="large">
+                <Button onClick={() => sendApi()} disabled={disabledBtn} htmlType="button" type="primary" size="large">
                     Оформить заказ
                 </Button>
             </div>
-            {open && (
-                <Modal onClose={() => setOpen(false)}>
-                    <OrderDetails />
+            {number && (
+                <Modal onClose={() => dispatch(closeModalOrder())}>
+                    <OrderDetails order={number} />
                 </Modal>
             )}
         </section>
     );
 }
 
-export default BurgerConstructor;
+export default React.memo(BurgerConstructor);

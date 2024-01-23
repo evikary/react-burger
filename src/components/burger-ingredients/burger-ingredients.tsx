@@ -1,49 +1,81 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { useState } from 'react';
 import style from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientsСategory from '../ingredients-category/ingredients-category';
-import { IIngredient } from '../../utils/types';
+import { useSelector } from 'react-redux';
+import { allItems } from '../../services/burger-ingredients/selector';
 
-interface IProps {
-    data: IIngredient[];
-}
+function BurgerIngredients() {
+    const { items } = useSelector(allItems);
+    const [current, setCurrent] = useState('buns');
+    const buns = useMemo(() => items.filter((item) => item.type === 'bun'), [items]);
+    const sauces = useMemo(() => items.filter((item) => item.type === 'sauce'), [items]);
+    const mains = useMemo(() => items.filter((item) => item.type === 'main'), [items]);
+    const tabsRef = useRef<HTMLUListElement | null>(null);
+    const bunRef = useRef<HTMLDivElement | null>(null);
+    const saucesRef = useRef<HTMLDivElement | null>(null);
+    const mainsRef = useRef<HTMLDivElement | null>(null);
 
-function BurgerIngredients({ data }: IProps) {
-    const [current, setCurrent] = useState('one');
-    const buns = useMemo(() => data.filter((item) => item.type === 'bun'), [data]);
-    const sauces = useMemo(() => data.filter((item) => item.type === 'sauce'), [data]);
-    const mains = useMemo(() => data.filter((item) => item.type === 'main'), [data]);
+    function handleScroll() {
+        const tabsRect: any = tabsRef.current?.getBoundingClientRect();
+        const tabsYpos = tabsRect.y + tabsRect.height;
+
+        let minDest = Infinity;
+        let id = '';
+        [bunRef, saucesRef, mainsRef]
+            .map((item) => {
+                return {
+                    ref: item,
+                    posY: item.current?.getBoundingClientRect().y || Infinity,
+                };
+            })
+            .forEach((item) => {
+                const dy = Math.abs(item.posY - tabsYpos);
+                if (dy < minDest) {
+                    minDest = dy;
+                    id = item.ref.current?.id || current;
+                }
+            });
+
+        setCurrent(id);
+    }
 
     return (
         <section className={`${style.ingredients} pt-10`}>
             <h1 className="mb-5 text text_type_main-large">Соберите бургер</h1>
             <aside>
-                <ul className={style.tabs} style={{ display: 'flex' }}>
+                <ul ref={tabsRef} className={style.tabs} style={{ display: 'flex' }}>
                     <li>
-                        <Tab value="one" active={current === 'one'} onClick={setCurrent}>
+                        <Tab value="buns" active={current === 'buns'} onClick={setCurrent}>
                             Булки
                         </Tab>
                     </li>
                     <li>
-                        <Tab value="two" active={current === 'two'} onClick={setCurrent}>
+                        <Tab value="sauces" active={current === 'sauces'} onClick={setCurrent}>
                             Соусы
                         </Tab>
                     </li>
                     <li>
-                        <Tab value="three" active={current === 'three'} onClick={setCurrent}>
+                        <Tab value="mains" active={current === 'mains'} onClick={setCurrent}>
                             Начинки
                         </Tab>
                     </li>
                 </ul>
             </aside>
-            <section className={`${style.container} mt-10`}>
-                <IngredientsСategory ingredients={buns}>Булки</IngredientsСategory>
-                <IngredientsСategory ingredients={sauces}>Соусы</IngredientsСategory>
-                <IngredientsСategory ingredients={mains}>Начинки</IngredientsСategory>
+            <section onScroll={handleScroll} className={`${style.container} mt-10`}>
+                <IngredientsСategory refCategory={bunRef} id={'buns'} ingredients={buns}>
+                    Булки
+                </IngredientsСategory>
+                <IngredientsСategory refCategory={saucesRef} id={'sauces'} ingredients={sauces}>
+                    Соусы
+                </IngredientsСategory>
+                <IngredientsСategory refCategory={mainsRef} id={'mains'} ingredients={mains}>
+                    Начинки
+                </IngredientsСategory>
             </section>
         </section>
     );
 }
 
-export default BurgerIngredients;
+export default React.memo(BurgerIngredients);

@@ -1,0 +1,31 @@
+.link {
+    padding: 17px 0;
+}
+
+.main {
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    padding-top: 180px;
+    width: 1280px;
+    margin: auto;
+    display: flex;
+    column-gap: 60px;
+    align-items: center;
+}
+
+.box {
+    width: 320px;
+}
+
+.text {
+    margin-right: -32px;
+}
+
+.logout {
+    border: none;
+    background: unset;
+    cursor: pointer;
+}
