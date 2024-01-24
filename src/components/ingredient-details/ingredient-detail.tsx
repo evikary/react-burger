@@ -13,7 +13,7 @@ interface IProps {
 function IngredientDetail({ ingredient, counter }: IProps) {
     const location = useLocation();
 
-    const [, dragRef] = useDrag({
+    const [, dragRef] = useDrag<IIngredient, unknown, unknown>({
         type: 'ingredient',
         item: ingredient,
     });

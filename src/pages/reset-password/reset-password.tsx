@@ -2,11 +2,12 @@ import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burg
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { resetForgotData } from '../../services/api';
+import { IFormResetPassword } from '../../utils/types';
 import style from './reset-password.module.css';
 
 function ResetPassword() {
-    const [data, setData] = useState({ password: '', token: '' });
-    const [fail, setFail] = useState('');
+    const [data, setData] = useState<IFormResetPassword>({ password: '', token: '' });
+    const [fail, setFail] = useState<string>('');
     const navigate = useNavigate();
 
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {

@@ -23,11 +23,24 @@ export interface IBodyPost {
 }
 
 export interface IOrder {
+    success: boolean;
     name: string;
     order: {
-        num: number | null;
+        ingredients: IIngredient[];
+        _id: string;
+        owner: {
+            name: string;
+            email: string;
+            createdAt: string;
+            updatedAt: string;
+        };
+        status: string;
+        name: string;
+        createdAt: string;
+        updatedAt: string;
+        number: number;
+        price: number;
     };
-    success: boolean;
 }
 
 export interface IConstructorAction {
@@ -85,25 +98,9 @@ export interface IIngredientItem {
     ingredientItem: null | IIngredient;
 }
 
-export interface IUser {
-    email: string;
-    name: string;
-}
-
 export interface ILoginAction {
     type: string;
     payload: null | IUser;
-}
-
-export interface IFormLogin {
-    email: string;
-    password: string;
-}
-
-export interface IFormRegister {
-    name: string;
-    email: string;
-    password: string;
 }
 
 export interface IFormResetPassword {
@@ -113,4 +110,58 @@ export interface IFormResetPassword {
 
 export interface IFormForgotData {
     email: string;
+}
+
+export interface IFormLogin extends IFormForgotData {
+    password: string;
+}
+
+export interface IUser extends IFormForgotData {
+    name: string;
+}
+
+export interface IFormRegister extends IFormForgotData {
+    name: string;
+    password: string;
+}
+
+// Api
+
+export interface IDataIngredients {
+    success: boolean;
+    data: IIngredient[];
+}
+
+export interface IRegisterResponse {
+    success: boolean;
+    accessToken: string;
+    refreshToken: string;
+    user: IUser;
+}
+
+export interface IResetResponse {
+    success: boolean;
+    message: string;
+}
+
+export interface IOptionsResponse extends RequestInit {
+    headers: Record<string, string>;
+}
+
+//DnD
+
+export interface IDragItems {
+    type: string;
+    item: IIngredient;
+    index: number;
+}
+
+export interface IDragCollectedProps {
+    isDragging: boolean;
+}
+
+export interface IDropCollectedProps {
+    canDrop: boolean;
+    dragItem: IIngredient;
+    isOver: boolean;
 }

@@ -4,18 +4,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { registerUser } from '../../services/user/action';
 import { selectRegisterError } from '../../services/user/selector';
+import { IFormRegister } from '../../utils/types';
 import style from './register.module.css';
 
 function Register() {
     const registerError = useSelector(selectRegisterError);
-    const [form, setForm] = useState({ name: '', email: '', password: '' });
-    const dispatch: any = useDispatch();
+    const [form, setForm] = useState<IFormRegister>({ name: '', email: '', password: '' });
+    const dispatch = useDispatch();
 
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
     const registerFormUser = () => {
+        //@ts-ignore
         dispatch(registerUser(form));
     };
 

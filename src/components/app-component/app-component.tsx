@@ -23,12 +23,14 @@ import ModalIngredientsDetails from '../modal-ingredients-details/modal-igredien
 
 function App() {
     const { load, fail } = useSelector(allItems);
-    const dispatch: any = useDispatch();
+    const dispatch = useDispatch();
     const location = useLocation();
     const navigate = useNavigate();
 
     useEffect(() => {
+        //@ts-ignore
         dispatch(getIngredients());
+        //@ts-ignore
         dispatch(checkAuth());
     }, []);
 

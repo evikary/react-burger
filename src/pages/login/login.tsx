@@ -4,18 +4,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { sendLogin } from '../../services/user/action';
 import { selectLoginError } from '../../services/user/selector';
+import { IFormLogin } from '../../utils/types';
 import style from './login.module.css';
 
 function Login() {
     const loginFailed = useSelector(selectLoginError);
-    const [form, setForm] = useState({ email: '', password: '' });
-    const dispatch: any = useDispatch();
+    const [form, setForm] = useState<IFormLogin>({ email: '', password: '' });
+    const dispatch = useDispatch();
 
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
     const handleClick = () => {
+        //@ts-ignore
         dispatch(sendLogin(form));
     };
 

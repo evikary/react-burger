@@ -1,12 +1,12 @@
 import style from './ingredients-category.module.css';
 import IngredientDetail from '../ingredient-details/ingredient-detail';
 import { IIngredient } from '../../utils/types';
-import React from 'react';
+import React, { LegacyRef } from 'react';
 import { useSelector } from 'react-redux';
 import { getIngredientsCounter } from '../../services/constructor-ingredients/selector';
 
 interface IProps {
-    refCategory: any;
+    refCategory: LegacyRef<HTMLDivElement>;
     id: string;
     ingredients: IIngredient[];
     children: React.ReactNode;

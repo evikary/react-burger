@@ -7,10 +7,11 @@ import style from './profile.module.css';
 
 function Profile() {
     const user = useSelector(selectUser);
-    const dispatch: any = useDispatch();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleClick = () => {
+        //@ts-ignore
         dispatch(sendLogout());
     };
 

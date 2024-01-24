@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { BURGER_API_URL } from '../../utils/ constants';
+import { getIngredientsApi } from '../api';
 
 export const GET_INGREDIENTS_REQUEST = 'INGREDIENTS/GET_ITEMS_REQUEST';
 export const GET_IINGREDIENTS_SUCCESS = 'INGREDIENTS/GET_ITEMS_SUCCESS';
@@ -10,24 +10,12 @@ export function getIngredients() {
         dispatch({
             type: GET_INGREDIENTS_REQUEST,
         });
-        fetch(`${BURGER_API_URL}/ingredients`)
-            .then((res) => {
-                if (!res.ok) {
-                    throw new Error('Произошла ошибка...');
-                }
-
-                return res.json();
-            })
+        getIngredientsApi()
             .then((json) => {
-                dispatch({
-                    type: GET_IINGREDIENTS_SUCCESS,
-                    payload: json.data,
-                });
+                dispatch({ type: GET_IINGREDIENTS_SUCCESS, payload: json.data });
             })
             .catch((error) => {
-                dispatch({
-                    type: GET_IINGREDIENTS_FAILED,
-                });
+                dispatch({ type: GET_IINGREDIENTS_FAILED });
             });
     };
 }
