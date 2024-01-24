@@ -1,5 +1,5 @@
 import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { sendForgotData } from '../../services/api';
 import { IFormForgotData } from '../../utils/types';
@@ -17,7 +17,8 @@ function ForgotPassword() {
         navigate('/login');
     };
 
-    const recoverPassword = async () => {
+    const recoverPassword = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         const res = await sendForgotData(data);
         if ((res.message = 'Reset email sent')) {
             localStorage.setItem('reset-password', 'approve');
@@ -27,12 +28,12 @@ function ForgotPassword() {
 
     return (
         <main>
-            <section className={style.container}>
+            <form className={style.container} onSubmit={recoverPassword}>
                 <h1 className="text text_type_main-medium">Восстановление пароля</h1>
                 <div className={style.boxInputs}>
                     <EmailInput placeholder="Укажите e-mail" onChange={onChange} value={data.email} name={'email'} isIcon={false} />
                 </div>
-                <Button onClick={recoverPassword} htmlType="button" type="primary" size="medium">
+                <Button htmlType="submit" type="primary" size="medium">
                     Восстановить
                 </Button>
                 <div className={`pt-20 ${style.boxBtns}`}>
@@ -43,7 +44,7 @@ function ForgotPassword() {
                         </Button>
                     </Link>
                 </div>
-            </section>
+            </form>
         </main>
     );
 }

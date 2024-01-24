@@ -1,5 +1,5 @@
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { resetForgotData } from '../../services/api';
 import { IFormResetPassword } from '../../utils/types';
@@ -20,7 +20,8 @@ function ResetPassword() {
         }
     }, []);
 
-    const resetForm = async () => {
+    const resetForm = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         try {
             const res = await resetForgotData(data);
             if (res.message === 'Password successfully reset') {
@@ -34,7 +35,7 @@ function ResetPassword() {
 
     return (
         <main>
-            <section className={style.container}>
+            <form className={style.container} onSubmit={resetForm}>
                 <h1 className="text text_type_main-medium">Восстановление пароля</h1>
                 <div className={style.boxInputs}>
                     <PasswordInput placeholder="Введите новый пароль" onChange={onChange} value={data.password} name={'password'} extraClass="mb-2" />
@@ -51,7 +52,7 @@ function ResetPassword() {
                     />
                 </div>
                 {fail && <p className={`${style.faile} text_type_main-default mb-3`}>Вы ввели неверный код!</p>}
-                <Button onClick={resetForm} htmlType="button" type="primary" size="medium">
+                <Button htmlType="submit" type="primary" size="medium">
                     Сохранить
                 </Button>
                 <div className={`pt-20 ${style.boxBtns}`}>
@@ -62,7 +63,7 @@ function ResetPassword() {
                         </Button>
                     </Link>
                 </div>
-            </section>
+            </form>
         </main>
     );
 }
