@@ -1,5 +1,5 @@
 import { IConstructor, IConstructorAction } from '../../utils/types';
-import { ADD_INGREDIENT, CONSTRUCTOR_REORDER, REMOVE_INGREDIENT } from './actions';
+import { ADD_INGREDIENT, CONSTRUCTOR_REORDER, REMOVE_INGREDIENT, RESET_INGREDIENTS } from './actions';
 
 const initialState: IConstructor = {
     bun: null,
@@ -17,6 +17,8 @@ export function constructorReducer(state = initialState, action: IConstructorAct
             }
         case REMOVE_INGREDIENT:
             return { ...state, toppings: state.toppings.filter((item) => item.key !== payload.key) };
+        case RESET_INGREDIENTS:
+            return { ...initialState };
         case CONSTRUCTOR_REORDER:
             const { from, to } = action;
             const tmp = state.toppings[to];
