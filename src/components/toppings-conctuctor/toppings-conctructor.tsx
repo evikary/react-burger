@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { useDrag, useDrop, XYCoord } from 'react-dnd';
 import { addMove } from '../../services/constructor-ingredients/actions';
 import { useDispatch } from 'react-redux';
-import { IIngredient } from '../../utils/types';
+import { IDragCollectedProps, IDragItems, IIngredient } from '../../utils/types';
 
 interface IProps {
     item: IIngredient;
@@ -16,7 +16,7 @@ function ToppingsConstructor({ item, index, handleClose }: IProps) {
     const dispatch = useDispatch();
     const ref = useRef<HTMLDivElement>(null);
 
-    const [, drop] = useDrop({
+    const [, drop] = useDrop<IDragItems, unknown, unknown>({
         accept: 'sorting',
         hover(item: { item: IIngredient; index: number }, monitor) {
             if (!ref.current) {
@@ -49,10 +49,10 @@ function ToppingsConstructor({ item, index, handleClose }: IProps) {
         },
     });
 
-    const [{ isDragging }, drag] = useDrag({
+    const [{ isDragging }, drag] = useDrag<IDragItems, unknown, IDragCollectedProps>({
         type: 'sorting',
         item: () => {
-            return { item, index };
+            return { item, index, type: 'sorting' };
         },
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),

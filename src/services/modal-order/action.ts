@@ -1,6 +1,7 @@
 import { Dispatch } from 'redux';
 import { IBodyPost } from '../../utils/types';
 import { createOrder } from '../api';
+import { resetIngredients } from '../constructor-ingredients/actions';
 
 export const OPEN_MODAL_ORDER = 'ORDER/OPEN_MODAL';
 export const CLOSE_MODAL_ORDER = 'ORDER/CLOSE_MODAL';
@@ -20,6 +21,7 @@ export function sendIngredients(data: IBodyPost) {
         createOrder(data)
             .then((json) => {
                 dispatch(openModalOrder(json.order.number));
+                dispatch(resetIngredients());
             })
             .catch((error) => {
                 dispatch({

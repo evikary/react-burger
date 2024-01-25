@@ -1,14 +1,15 @@
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../../services/user/action';
 import { selectUser } from '../../services/user/selector';
+import { IFormRegister } from '../../utils/types';
 import style from './profile-edit.module.css';
 
 function ProfileEdit() {
     const user = useSelector(selectUser);
-    const dispatch: any = useDispatch();
-    const [form, setForm] = useState({ name: user.name || '', email: user.email || '', password: '' });
+    const dispatch = useDispatch();
+    const [form, setForm] = useState<IFormRegister>({ name: user.name || '', email: user.email || '', password: '' });
 
     const handleChangeForm = (e: ChangeEvent<HTMLInputElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -18,14 +19,16 @@ function ProfileEdit() {
         setForm({ name: user.name || '', email: user.email || '', password: '' });
     };
 
-    const updateForm = () => {
+    const updateForm = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         if (form.name !== user.name || form.email !== user.email || form.password.length !== 0) {
+            //@ts-ignore
             dispatch(updateUser(form));
         }
     };
 
     return (
-        <div className={style.box2}>
+        <form className={style.box2} onSubmit={updateForm}>
             <div style={{ display: 'flex', flexDirection: 'column', rowGap: '24px', paddingBottom: '24px' }}>
                 <Input
                     type={'text'}
@@ -46,11 +49,11 @@ function ProfileEdit() {
                 <Button onClick={resetForm} htmlType="button" type="secondary" size="medium">
                     Отмена
                 </Button>
-                <Button onClick={updateForm} htmlType="button" type="primary" size="medium">
+                <Button htmlType="submit" type="primary" size="medium">
                     Сохранить
                 </Button>
             </div>
-        </div>
+        </form>
     );
 }
 

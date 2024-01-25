@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const ADD_INGREDIENT = 'CONSTRUCTOR/ADD_INGREDIENT';
 export const REMOVE_INGREDIENT = 'CONSTRUCTOR/REMOVE_INGREDIENT';
+export const RESET_INGREDIENTS = 'CONSTRUCTOR/RESET_INGREDIENTS';
 
 export const SEND_IINGREDIENTS_REQUEST = 'CONSTRUCTOR/SEND_IINGREDIENTS_REQUEST';
 export const SEND_IINGREDIENTS_SUCCESS = 'CONSTRUCTOR/SEND_IINGREDIENTS_SUCCESS';
@@ -17,6 +18,10 @@ export const removeIngredient = (ingredient: IIngredient) => ({
 export const addIngredient = (ingredient: IIngredient) => ({
     type: ADD_INGREDIENT,
     payload: { ...ingredient, key: uuidv4() },
+});
+
+export const resetIngredients = () => ({
+    type: RESET_INGREDIENTS,
 });
 
 export const addMove = (dragIndex: number, hoverIndex: number) => ({

@@ -5,21 +5,25 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientsСategory from '../ingredients-category/ingredients-category';
 import { useSelector } from 'react-redux';
 import { allItems } from '../../services/burger-ingredients/selector';
+import { IIngredient } from '../../utils/types';
 
 function BurgerIngredients() {
     const { items } = useSelector(allItems);
-    const [current, setCurrent] = useState('buns');
-    const buns = useMemo(() => items.filter((item) => item.type === 'bun'), [items]);
-    const sauces = useMemo(() => items.filter((item) => item.type === 'sauce'), [items]);
-    const mains = useMemo(() => items.filter((item) => item.type === 'main'), [items]);
-    const tabsRef = useRef<HTMLUListElement | null>(null);
-    const bunRef = useRef<HTMLDivElement | null>(null);
-    const saucesRef = useRef<HTMLDivElement | null>(null);
-    const mainsRef = useRef<HTMLDivElement | null>(null);
+    const [current, setCurrent] = useState<string>('buns');
+    const buns = useMemo<IIngredient[]>(() => items.filter((item) => item.type === 'bun'), [items]);
+    const sauces = useMemo<IIngredient[]>(() => items.filter((item) => item.type === 'sauce'), [items]);
+    const mains = useMemo<IIngredient[]>(() => items.filter((item) => item.type === 'main'), [items]);
+    const tabsRef = useRef<HTMLUListElement>(null);
+    const bunRef = useRef<HTMLDivElement>(null);
+    const saucesRef = useRef<HTMLDivElement>(null);
+    const mainsRef = useRef<HTMLDivElement>(null);
 
     function handleScroll() {
-        const tabsRect: any = tabsRef.current?.getBoundingClientRect();
-        const tabsYpos = tabsRect.y + tabsRect.height;
+        let tabsYpos: number;
+        const tabsRect = tabsRef.current?.getBoundingClientRect();
+        if (tabsRect) {
+            tabsYpos = tabsRect.y + tabsRect.height;
+        }
 
         let minDest = Infinity;
         let id = '';

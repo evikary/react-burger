@@ -1,6 +1,6 @@
 import style from './burger-constructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { IIngredient } from '../../utils/types';
+import { IDropCollectedProps, IIngredient } from '../../utils/types';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,10 +18,10 @@ function BurgerConstructor() {
     const user = useSelector(selectUser);
     const { bun, toppings } = useSelector(allIngredients);
     const number = useSelector(getOrderModal);
-    const dispatch: any = useDispatch();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const getPrice = useMemo(() => {
+    const getPrice = useMemo<number>(() => {
         const res = toppings.map((i) => i.price).reduce((acc, item) => acc + item, 0);
         const price = bun !== null ? bun?.price * 2 + res : res;
         return price;
@@ -44,11 +44,12 @@ function BurgerConstructor() {
                 arr.unshift(bun._id);
                 arr.push(bun._id);
             }
+            //@ts-ignore
             dispatch(sendIngredients({ ingredients: arr }));
         }
     };
 
-    const [{ isOver, dragItem, canDrop }, dropTarget] = useDrop({
+    const [{ isOver, dragItem, canDrop }, dropTarget] = useDrop<IIngredient, unknown, IDropCollectedProps>({
         accept: 'ingredient',
         drop(ingredient: IIngredient) {
             dispatch(addIngredient(ingredient));
