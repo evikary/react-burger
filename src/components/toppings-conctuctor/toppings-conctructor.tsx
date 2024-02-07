@@ -3,8 +3,8 @@ import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burg
 import { useRef } from 'react';
 import { useDrag, useDrop, XYCoord } from 'react-dnd';
 import { addMove } from '../../services/constructor-ingredients/actions';
-import { useDispatch } from 'react-redux';
 import { IDragCollectedProps, IDragItems, IIngredient } from '../../utils/types';
+import { useDispatch } from '../../services/store';
 
 interface IProps {
     item: IIngredient;
@@ -42,7 +42,6 @@ function ToppingsConstructor({ item, index, handleClose }: IProps) {
             if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
                 return;
             }
-
             dispatch(addMove(dragIndex, hoverIndex));
 
             item.index = hoverIndex;

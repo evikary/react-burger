@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
-import { IStore } from '../../utils/types';
+import { RootState } from '../store';
 
-export const allIngredients = (store: IStore) => store.ingredientsConstructor;
+export const allIngredients = (store: RootState) => store.ingredientsConstructor;
 
 export const getIngredientsCounter = createSelector(allIngredients, ({ bun, toppings }) => {
     const counter: Record<string, number> = {};

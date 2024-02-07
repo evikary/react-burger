@@ -3,8 +3,8 @@ import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-dev
 import Link from '../link/link';
 import style from './app-header.module.css';
 import { useMatch } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { selectUser } from '../../services/user/selector';
+import { useSelector } from '../../services/store';
 
 function AppHeader() {
     const isConstructor = !!useMatch({ path: '/', end: true });

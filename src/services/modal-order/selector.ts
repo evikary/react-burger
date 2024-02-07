@@ -1,3 +1,3 @@
-import { IStore } from '../../utils/types';
+import { RootState } from '../store';
 
-export const getOrderModal = (store: IStore) => store.orderModal.num;
+export const getOrderModal = (store: RootState) => store.orderModal.num;

@@ -1,7 +1,8 @@
 import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ChangeEvent, FormEvent, SyntheticEvent, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { ChangeEvent, FormEvent, useState } from 'react';
+// import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from '../../services/store';
 import { sendLogin } from '../../services/user/action';
 import { selectLoginError } from '../../services/user/selector';
 import { IFormLogin } from '../../utils/types';
@@ -18,7 +19,6 @@ function Login() {
 
     const handleClick = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        //@ts-ignore
         dispatch(sendLogin(form));
     };
 

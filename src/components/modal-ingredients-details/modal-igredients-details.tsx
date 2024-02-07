@@ -1,8 +1,8 @@
 import style from './modal-igredients-details.module.css';
-import { useSelector } from 'react-redux';
 import { allItems } from '../../services/burger-ingredients/selector';
 import { useParams } from 'react-router-dom';
 import Loader from '../loader/loader';
+import { useSelector } from '../../services/store';
 
 function ModalIngredientsDetails() {
     const { items } = useSelector(allItems);

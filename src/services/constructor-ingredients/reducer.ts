@@ -1,23 +1,29 @@
-import { IConstructor, IConstructorAction } from '../../utils/types';
-import { ADD_INGREDIENT, CONSTRUCTOR_REORDER, REMOVE_INGREDIENT, RESET_INGREDIENTS } from './actions';
+import { IIngredient } from '../../utils/types';
+import { TStoreActions } from '../store';
+import { CONSTRUCTOR_ADD_INGREDIENT, CONSTRUCTOR_REORDER, CONSTRUCTOR_REMOVE_INGREDIENT, CONSTRUCTOR_RESET_INGREDIENTS } from './actions';
 
-const initialState: IConstructor = {
+type TConstructorState = {
+    bun: IIngredient | null;
+    toppings: ReadonlyArray<IIngredient>;
+};
+
+const initialState: TConstructorState = {
     bun: null,
     toppings: [],
 };
 
-export function constructorReducer(state = initialState, action: IConstructorAction) {
-    const { type, payload } = action;
+export function constructorReducer(state = initialState, action: TStoreActions): TConstructorState {
+    const { type } = action;
     switch (type) {
-        case ADD_INGREDIENT:
-            if (payload.type === 'bun') {
-                return { ...state, bun: payload };
+        case CONSTRUCTOR_ADD_INGREDIENT:
+            if (action.payload.type === 'bun') {
+                return { ...state, bun: action.payload };
             } else {
-                return { ...state, toppings: [...state.toppings, payload] };
+                return { ...state, toppings: [...state.toppings, action.payload] };
             }
-        case REMOVE_INGREDIENT:
-            return { ...state, toppings: state.toppings.filter((item) => item.key !== payload.key) };
-        case RESET_INGREDIENTS:
+        case CONSTRUCTOR_REMOVE_INGREDIENT:
+            return { ...state, toppings: state.toppings.filter((item) => item.key !== action.payload.key) };
+        case CONSTRUCTOR_RESET_INGREDIENTS:
             return { ...initialState };
         case CONSTRUCTOR_REORDER:
             const { from, to } = action;

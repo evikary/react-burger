@@ -1,4 +1,5 @@
-import { ILoginAction } from '../../utils/types';
+import { IUser } from '../../utils/types';
+import { TStoreActions } from '../store';
 import {
     AUTH_CHECKED,
     REGISTER_USER_FAILED,
@@ -13,7 +14,21 @@ import {
     UPDATE_FORM_SUCCESS,
 } from './action';
 
-const initialState = {
+type TUserState = {
+    user: IUser | null;
+    isAuthChecked: boolean;
+
+    registerUserError: string | null;
+    registerUserRequest: boolean;
+
+    loginUserError: string | null;
+    loginUserRequest: boolean;
+
+    updateUserError: string | null;
+    updateUserRequest: boolean;
+};
+
+const initialState: TUserState = {
     user: null,
     isAuthChecked: false,
 
@@ -27,8 +42,8 @@ const initialState = {
     updateUserRequest: false,
 };
 
-export function userReducer(state = initialState, action: ILoginAction) {
-    const { type, payload } = action;
+export function userReducer(state = initialState, action: TStoreActions): TUserState {
+    const { type } = action;
     switch (type) {
         case AUTH_CHECKED:
             return {
@@ -46,12 +61,12 @@ export function userReducer(state = initialState, action: ILoginAction) {
                 ...state,
                 registerUserError: null,
                 registerUserRequest: false,
-                user: payload,
+                user: action.payload,
             };
         case REGISTER_USER_FAILED:
             return {
                 ...state,
-                registerUserError: payload,
+                registerUserError: action.payload,
                 updateUserRequest: false,
             };
         case SEND_LOGIN_STARTED:
@@ -65,12 +80,12 @@ export function userReducer(state = initialState, action: ILoginAction) {
                 ...state,
                 loginUserError: null,
                 loginUserRequest: false,
-                user: payload,
+                user: action.payload,
             };
         case SEND_LOGIN_FAILED:
             return {
                 ...state,
-                loginUserError: payload,
+                loginUserError: action.payload,
                 loginUserRequest: false,
             };
         case SEND_LOGOUT_SUCCESS:
@@ -89,13 +104,13 @@ export function userReducer(state = initialState, action: ILoginAction) {
                 ...state,
                 updateUserError: null,
                 updateUserRequest: false,
-                user: payload,
+                user: action.payload,
             };
         case UPDATE_FORM_FAILED:
             return {
                 ...state,
                 updateUserRequest: false,
-                updateUserError: payload,
+                updateUserError: action.payload,
             };
         default:
             return state;

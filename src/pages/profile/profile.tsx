@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from '../../services/store';
 import { sendLogout } from '../../services/user/action';
 import { selectUser } from '../../services/user/selector';
 import style from './profile.module.css';
@@ -11,7 +12,6 @@ function Profile() {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        //@ts-ignore
         dispatch(sendLogout());
     };
 
