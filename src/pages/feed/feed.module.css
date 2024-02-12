@@ -2,5 +2,32 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    row-gap: 50px;
+}
+
+.title {
+    margin-right: auto;
+    margin-left: 270px;
+}
+
+.main {
+    display: flex;
+    column-gap: 60px;
+}
+
+.infoContainer {
+    width: 580px;
+}
+
+.box {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 60px;
+}
+
+.boxId {
+    width: 272px;
+}
+
+.done {
+    color: #00cccc;
 }

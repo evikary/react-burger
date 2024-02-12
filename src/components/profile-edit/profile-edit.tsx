@@ -8,7 +8,6 @@ import style from './profile-edit.module.css';
 
 function ProfileEdit() {
     const user = useSelector(selectUser);
-    console.log('user', user);
     const dispatch = useDispatch();
     const [form, setForm] = useState<IFormRegister>({ name: user?.name || '', email: user?.name || '', password: '' });
 
