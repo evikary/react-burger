@@ -1,6 +1,5 @@
 import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ChangeEvent, FormEvent, useState } from 'react';
-// import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from '../../services/store';
 import { sendLogin } from '../../services/user/action';

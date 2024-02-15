@@ -20,6 +20,7 @@ import Orders from '../orders/orders';
 import Modal from '../modal/modal';
 import ModalIngredientsDetails from '../modal-ingredients-details/modal-igredients-details';
 import { useDispatch, useSelector } from '../../services/store';
+import ModalFeedOrders from '../modal-feed-orders/modal-feed-orders';
 
 function App() {
     const { load, fail } = useSelector(allItems);
@@ -50,6 +51,8 @@ function App() {
                             <Route path="orders" element={<OnlyAuth component={<Orders />} />} />
                         </Route>
                         <Route path="/feed" element={<Feed />} />
+                        <Route path="/feed/:number" element={<ModalFeedOrders />} />
+                        <Route path="/profile/orders/:number" element={<ModalFeedOrders />} />
                         <Route path="/ingredients/:id" element={<ModalIngredientsDetails />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
@@ -60,6 +63,22 @@ function App() {
                                 element={
                                     <Modal onClose={() => navigate(-1)}>
                                         <ModalIngredientsDetails />
+                                    </Modal>
+                                }
+                            />
+                            <Route
+                                path="/feed/:number"
+                                element={
+                                    <Modal onClose={() => navigate(-1)}>
+                                        <ModalFeedOrders />
+                                    </Modal>
+                                }
+                            />
+                            <Route
+                                path="/profile/orders/:number"
+                                element={
+                                    <Modal onClose={() => navigate(-1)}>
+                                        <ModalFeedOrders />
                                     </Modal>
                                 }
                             />

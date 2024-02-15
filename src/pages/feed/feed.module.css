@@ -6,10 +6,11 @@
 
 .title {
     margin-right: auto;
-    margin-left: 270px;
+    margin-left: 238px;
 }
 
 .main {
+    width: 1290px;
     display: flex;
     column-gap: 60px;
 }

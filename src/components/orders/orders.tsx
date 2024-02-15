@@ -17,7 +17,7 @@ function Orders() {
                 ingredients: ['643d69a5c3f7b9001cfa093e'],
                 _id: 2,
                 status: 'done',
-                number: 3,
+                number: 2,
                 createdAt: '2024-02-11T20:07:25.654Z',
                 updatedAt: '2024-02-11T20:07:25.654Z',
             },
@@ -43,7 +43,7 @@ function Orders() {
                 ingredients: ['643d69a5c3f7b9001cfa0940', '643d69a5c3f7b9001cfa093d', '643d69a5c3f7b9001cfa0944', '643d69a5c3f7b9001cfa0945'],
                 _id: 4,
                 status: 'done',
-                number: 3,
+                number: 4,
                 createdAt: '2024-02-01T20:10:00.654Z',
                 updatedAt: '2024-02-01T20:10:00.654Z',
             },
@@ -64,7 +64,7 @@ function Orders() {
                 ],
                 _id: 5,
                 status: 'done',
-                number: 3,
+                number: 5,
                 createdAt: '2024-01-23T20:13:23.654Z',
                 updatedAt: '2024-01-23T20:13:23.654Z',
             },
@@ -76,7 +76,7 @@ function Orders() {
     return (
         <section className={`${style.container} pr-2`}>
             {mokDate.orders.map((item) => {
-                return <CardOrder key={item._id} ingredientsId={item.ingredients} time={item.createdAt} />;
+                return <CardOrder key={item._id} ingredientsId={item.ingredients} time={item.createdAt} number={item.number} />;
             })}
         </section>
     );
