@@ -100,3 +100,28 @@ export interface IDropCollectedProps {
     dragItem: IIngredient;
     isOver: boolean;
 }
+
+//WS
+
+export enum WebSocketStatus {
+    CONNECTING = 'CONNECTING',
+    ONLINE = 'ONLINE',
+    OFFLINE = 'OFFLINE',
+}
+
+export interface IOrder {
+    createdAt: string;
+    ingredients: string[];
+    name: string;
+    number: number;
+    status: string;
+    updatedAt: string;
+    _id: string;
+}
+
+export interface IFeedOrders {
+    orders: IOrder[];
+    success: boolean;
+    total: number;
+    totalToday: number;
+}

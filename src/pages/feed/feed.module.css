@@ -32,3 +32,10 @@
 .done {
     color: #00cccc;
 }
+
+.doneOrders {
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
