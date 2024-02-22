@@ -119,6 +119,16 @@ export interface IOrder {
     _id: string;
 }
 
+export interface IIngredientsOrder {
+    createdAt: string;
+    ingredients: IIngredient[];
+    name: string;
+    number: number;
+    status: string;
+    updatedAt: string;
+    _id: string;
+}
+
 export interface IFeedOrders {
     orders: IOrder[];
     success: boolean;

@@ -3,7 +3,7 @@ import Orders from '../../components/orders/orders';
 import { connect, disconnect } from '../../services/orders/actions';
 import { getFeedOrders } from '../../services/orders/selector';
 import { useDispatch, useSelector } from '../../services/store';
-import { FEED_ORDER_URL } from '../../utils/ constants';
+import { ORDER_URL } from '../../utils/ constants';
 import style from './feed.module.css';
 
 function Feed() {
@@ -13,7 +13,7 @@ function Feed() {
     let pending = orders.filter((item) => item.status !== 'done').slice(0, 20);
 
     useEffect(() => {
-        dispatch(connect(FEED_ORDER_URL));
+        dispatch(connect(`${ORDER_URL}/all`));
         return () => {
             dispatch(disconnect());
         };

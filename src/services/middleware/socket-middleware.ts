@@ -22,7 +22,6 @@ export const socketMiddleware = (wsActions: TWSActionsTypes) => {
 
             if (wsConnect.match(action)) {
                 socket = new WebSocket(action.payload);
-                console.log(socket);
                 dispatch(wsConnecting());
             }
 
@@ -38,7 +37,6 @@ export const socketMiddleware = (wsActions: TWSActionsTypes) => {
                 socket.onmessage = (event) => {
                     const { data } = event;
                     const parsedData = JSON.parse(data);
-                    console.log('parsedData', parsedData);
                     dispatch(onMessage(parsedData));
                 };
 
@@ -53,7 +51,6 @@ export const socketMiddleware = (wsActions: TWSActionsTypes) => {
                 if (wsDisconnect.match(action)) {
                     socket.close();
                     socket = null;
-                    console.log('socket', socket);
                 }
             }
 

@@ -19,7 +19,7 @@ const initialState: TOrderState = {
     error: '',
 };
 
-export const ordersReducer = createReducer(initialState, (builder) => {
+export const profileOrdersReducer = createReducer(initialState, (builder) => {
     builder
         .addCase(wsConnecting, (state) => {
             state.status = WebSocketStatus.CONNECTING;

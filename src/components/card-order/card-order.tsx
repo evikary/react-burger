@@ -1,22 +1,15 @@
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector } from '../../services/store';
-import { allItems } from '../../services/burger-ingredients/selector';
 import style from './card-order.module.css';
 import { Link, useLocation } from 'react-router-dom';
-import { getFeedOrders } from '../../services/orders/selector';
-import { IIngredient } from '../../utils/types';
+import { IIngredient, IIngredientsOrder } from '../../utils/types';
 
 interface IProps {
     number: number;
+    order: IIngredientsOrder;
 }
 
-function CardOrder({ number }: IProps) {
+function CardOrder({ number, order }: IProps) {
     const location = useLocation();
-    const { orders } = useSelector(getFeedOrders);
-    const { items } = useSelector(allItems);
-
-    const rawOrder = orders.filter((item) => item.number === number)[0];
-    const order = { ...rawOrder, ingredients: rawOrder.ingredients.map((id) => items.filter((item) => item._id === id)[0]) };
     const price = order.ingredients.reduce((acc, item) => acc + item.price, 0);
     let num: null | number = null;
 

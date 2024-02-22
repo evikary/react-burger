@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { connect, disconnect } from '../../services/profile-orders/actions';
 import { useDispatch, useSelector } from '../../services/store';
 import { sendLogout } from '../../services/user/action';
 import { selectUser } from '../../services/user/selector';
+import { ORDER_URL } from '../../utils/ constants';
 import style from './profile.module.css';
 
 function Profile() {
@@ -19,6 +21,14 @@ function Profile() {
             navigate('/login');
         }
     }, [user]);
+
+    useEffect(() => {
+        const accessToken = localStorage.getItem('accessToken')?.slice(7);
+        dispatch(connect(`${ORDER_URL}?token=${accessToken}`));
+        return () => {
+            dispatch(disconnect());
+        };
+    }, []);
 
     return (
         <main>

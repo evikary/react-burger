@@ -18,6 +18,17 @@ import {
     wsError as feedWSError,
     TOrdersActions,
 } from './orders/actions';
+
+import {
+    connect as profileConnect,
+    disconnect as profileDisconnect,
+    wsConnecting as profileWSConnecting,
+    wsOpen as profileWSOpen,
+    wsClose as profileWSClose,
+    wsMessage as profileWSMessage,
+    wsError as profileWSError,
+    TProfileOrdersActions,
+} from './profile-orders/actions';
 import { socketMiddleware } from './middleware/socket-middleware';
 
 export const feedMiddleware = socketMiddleware({
@@ -30,7 +41,17 @@ export const feedMiddleware = socketMiddleware({
     onMessage: feedWSMessage,
 });
 
-const enhancer = composeEnhancers(applyMiddleware(thunk), applyMiddleware(feedMiddleware));
+export const profileMiddleware = socketMiddleware({
+    wsConnect: profileConnect,
+    wsDisconnect: profileDisconnect,
+    wsConnecting: profileWSConnecting,
+    onOpen: profileWSOpen,
+    onClose: profileWSClose,
+    onError: profileWSError,
+    onMessage: profileWSMessage,
+});
+
+const enhancer = composeEnhancers(applyMiddleware(thunk), applyMiddleware(feedMiddleware), applyMiddleware(profileMiddleware));
 
 export const store = createStore(rootReducer, enhancer);
 
@@ -42,7 +63,8 @@ export type TStoreActions =
     | TModalBurgerActions
     | TModalOrderActions
     | TUserActions
-    | TOrdersActions;
+    | TOrdersActions
+    | TProfileOrdersActions;
 
 export type StoreDispatch = ThunkDispatch<RootState, unknown, TStoreActions>;
 
