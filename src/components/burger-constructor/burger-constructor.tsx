@@ -21,8 +21,6 @@ function BurgerConstructor() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    console.log('isCreatedOrder', isCreatedOrder);
-
     const getPrice = useMemo<number>(() => {
         const res = toppings.map((i) => i.price).reduce((acc, item) => acc + item, 0);
         const price = bun !== null ? bun?.price * 2 + res : res;

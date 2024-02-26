@@ -3,6 +3,7 @@ import done from '../../images/graphics.png';
 import { useSelector } from '../../services/store';
 import { getOrderModal } from '../../services/modal-order/selector';
 import loader from '../../images/rings.svg';
+import { getOrderApi } from '../../services/api';
 
 function OrderDetails() {
     const number = useSelector(getOrderModal);

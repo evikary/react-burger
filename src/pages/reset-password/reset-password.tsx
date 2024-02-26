@@ -22,15 +22,16 @@ function ResetPassword() {
 
     const resetForm = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        try {
-            const res = await resetForgotData(data);
-            if (res.message === 'Password successfully reset') {
-                localStorage.removeItem('reset-password');
-                navigate('/login');
-            }
-        } catch (err: any) {
-            setFail(err.message);
-        }
+        const res = await resetForgotData(data)
+            .then((res) => {
+                if (res.message === 'Password successfully reset') {
+                    localStorage.removeItem('reset-password');
+                    navigate('/login');
+                }
+            })
+            .catch((err) => {
+                setFail(err.message);
+            });
     };
 
     return (

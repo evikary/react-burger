@@ -135,3 +135,12 @@ export interface IFeedOrders {
     total: number;
     totalToday: number;
 }
+
+export interface IallOrderApi {
+    orders: [IOrderApi];
+    success: boolean;
+}
+
+export interface IOrderApi extends IOrder {
+    __v: number;
+}

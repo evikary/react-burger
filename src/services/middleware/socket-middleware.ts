@@ -17,6 +17,7 @@ export type TWSActionsTypes = {
 export const socketMiddleware = (wsActions: TWSActionsTypes): Middleware<{}, RootState> => {
     return (store: MiddlewareAPI<Dispatch, RootState>) => {
         let socket: WebSocket | null = null;
+        let closing = false;
 
         return (next) => (action) => {
             const { dispatch } = store;
@@ -40,7 +41,6 @@ export const socketMiddleware = (wsActions: TWSActionsTypes): Middleware<{}, Roo
                     const { data } = event;
                     const parsedData = JSON.parse(data);
                     if (parsedData.message === 'Invalid or missing token') {
-                        console.log('Invalid or missing token');
                         dispatch(checkAuth() as unknown as AnyAction);
                     } else {
                         dispatch(onMessage(parsedData));
@@ -48,7 +48,11 @@ export const socketMiddleware = (wsActions: TWSActionsTypes): Middleware<{}, Roo
                 };
 
                 socket.onclose = (event) => {
-                    dispatch(onClose());
+                    if (closing) {
+                        dispatch(onClose());
+                    } else {
+                        dispatch(wsConnecting());
+                    }
                 };
 
                 if (wsSendMessage && wsSendMessage.match(action)) {
@@ -56,6 +60,7 @@ export const socketMiddleware = (wsActions: TWSActionsTypes): Middleware<{}, Roo
                 }
 
                 if (wsDisconnect.match(action)) {
+                    closing = true;
                     socket.close();
                     socket = null;
                 }

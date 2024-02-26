@@ -1,19 +1,35 @@
 import style from './modal-feed-orders.module.css';
 import { useParams } from 'react-router-dom';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector } from '../../services/store';
+import { useDispatch, useSelector } from '../../services/store';
 import { getFeedOrders } from '../../services/orders/selector';
 import { allItems } from '../../services/burger-ingredients/selector';
 import { getProfileOrders } from '../../services/profile-orders/selector';
+import Loader from '../loader/loader';
+import { useEffect } from 'react';
+import { getAllOrderApi } from '../../services/modal-order/action';
+import { getApiOrder } from '../../services/modal-order/selector';
 
 function ModalFeedOrders() {
+    const dispath = useDispatch();
     const { number } = useParams();
     const { orders: feedOrders } = useSelector(getFeedOrders);
     const { orders: profileOrders } = useSelector(getProfileOrders);
+    const currentOrder = useSelector(getApiOrder);
     const orders = [...feedOrders, ...profileOrders];
     const { items } = useSelector(allItems);
+    const order = orders.filter((item) => item.number === Number(number))[0] || currentOrder;
 
-    const order = number ? orders.filter((item) => item.number === +number)[0] : null;
+    useEffect(() => {
+        if (!order) {
+            dispath(getAllOrderApi(number));
+        }
+    }, []);
+
+    if (!order) {
+        return <Loader />;
+    }
+
     const ingredients = order ? order.ingredients.map((item) => items.find((i) => item === i._id)) : [];
     const price = ingredients.map((item) => item!.price).reduce((acc, item) => acc! + item!, 0);
     const setIngredients = ingredients ? [...new Set(ingredients)] : null;

@@ -10,6 +10,10 @@ import {
     IResetResponse,
     IDataIngredients,
     IOptionsResponse,
+    IFeedOrders,
+    IIngredientsOrder,
+    IOrderApi,
+    IallOrderApi,
 } from '../utils/types';
 
 export const getIngredientsApi = (): Promise<IDataIngredients> => {
@@ -190,4 +194,20 @@ export const createOrder = async (data: IBodyPost): Promise<IOrder> => {
     } catch (error) {
         return Promise.reject(error);
     }
+};
+
+export const getOrderApi = async (num: string): Promise<IOrderApi> => {
+    return fetch(`${BURGER_API_URL}/orders/${num}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+        .then((data) => checkResponse<IallOrderApi>(data))
+        .then((json) => {
+            return json.orders[0];
+        })
+        .catch((err) => {
+            return Promise.reject(err);
+        });
 };
