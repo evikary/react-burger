@@ -55,12 +55,7 @@ export const profileMiddleware = socketMiddleware({
 const enhancer = composeEnhancers(applyMiddleware(feedMiddleware), applyMiddleware(profileMiddleware), applyMiddleware(thunk));
 
 export const store = createStore(rootReducer, enhancer);
-// export const store = configureStore({
-//     reducer: rootReducer,
-//     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk, feedMiddleware, profileMiddleware),
-// });
 
-// export type RootState = ReturnType<typeof store.getState>;
 export type RootState = ReturnType<typeof rootReducer>;
 
 export type TStoreActions =
@@ -72,10 +67,8 @@ export type TStoreActions =
     | TOrdersActions
     | TProfileOrdersActions;
 
-// export type StoreDispatch = ThunkDispatch<RootState, unknown, TStoreActions>;
 export type StoreDispatch = typeof store.dispatch;
 
-// export type StoreThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, TStoreActions>;
 export type StoreThunk<ReturnType = void> = ActionCreator<ThunkAction<ReturnType, RootState, unknown, TStoreActions>>;
 
 export const useDispatch = () => dispatchHook<StoreDispatch | StoreThunk>();
