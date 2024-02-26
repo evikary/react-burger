@@ -1,5 +1,5 @@
-import { applyMiddleware, createStore, Middleware } from 'redux';
-import { thunk, ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { ActionCreator, applyMiddleware, createStore } from 'redux';
+import thunk, { ThunkAction } from 'redux-thunk';
 import { composeEnhancers } from '../utils/devtools';
 import { TBurgerIngredientsActions } from './burger-ingredients/actions';
 import { TConstructorIngredientsActions } from './constructor-ingredients/actions';
@@ -30,6 +30,7 @@ import {
     TProfileOrdersActions,
 } from './profile-orders/actions';
 import { socketMiddleware } from './middleware/socket-middleware';
+import { configureStore } from '@reduxjs/toolkit';
 
 export const feedMiddleware = socketMiddleware({
     wsConnect: feedConnect,
@@ -51,11 +52,16 @@ export const profileMiddleware = socketMiddleware({
     onMessage: profileWSMessage,
 });
 
-const enhancer = composeEnhancers(applyMiddleware(thunk), applyMiddleware(feedMiddleware), applyMiddleware(profileMiddleware));
+const enhancer = composeEnhancers(applyMiddleware(feedMiddleware), applyMiddleware(profileMiddleware), applyMiddleware(thunk));
 
 export const store = createStore(rootReducer, enhancer);
+// export const store = configureStore({
+//     reducer: rootReducer,
+//     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk, feedMiddleware, profileMiddleware),
+// });
 
-export type RootState = ReturnType<typeof store.getState>;
+// export type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof rootReducer>;
 
 export type TStoreActions =
     | TBurgerIngredientsActions
@@ -66,10 +72,12 @@ export type TStoreActions =
     | TOrdersActions
     | TProfileOrdersActions;
 
-export type StoreDispatch = ThunkDispatch<RootState, unknown, TStoreActions>;
+// export type StoreDispatch = ThunkDispatch<RootState, unknown, TStoreActions>;
+export type StoreDispatch = typeof store.dispatch;
 
-export type StoreThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, TStoreActions>;
+// export type StoreThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, TStoreActions>;
+export type StoreThunk<ReturnType = void> = ActionCreator<ThunkAction<ReturnType, RootState, unknown, TStoreActions>>;
 
-export const useDispatch = () => dispatchHook<StoreDispatch>();
+export const useDispatch = () => dispatchHook<StoreDispatch | StoreThunk>();
 
 export const useSelector: TypedUseSelectorHook<RootState> = selectorHook;

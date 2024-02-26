@@ -87,7 +87,7 @@ export type TUserActions =
     | IUpdateFormSuccessAction
     | IUpdateFormFailedAction;
 
-export const checkAuth = (): StoreThunk => (dispatch: StoreDispatch) => {
+export const checkAuth: StoreThunk = () => (dispatch) => {
     const token = localStorage.getItem('accessToken');
     if (token) {
         dispatch(getUser(token)).finally(() => {
@@ -98,34 +98,30 @@ export const checkAuth = (): StoreThunk => (dispatch: StoreDispatch) => {
     }
 };
 
-export const getUser =
-    (token: string): StoreThunk<Promise<unknown>> =>
-    (dispatch: StoreDispatch) => {
-        return getUserApi(token)
-            .then((data) => {
-                dispatch({ type: SEND_LOGIN_SUCCESS, payload: data.user });
-            })
-            .catch((error) => {
-                dispatch({ type: SEND_LOGIN_FAILED, payload: error.message });
-            });
-    };
+export const getUser: StoreThunk<Promise<unknown>> = (token: string) => (dispatch) => {
+    return getUserApi(token)
+        .then((data) => {
+            dispatch({ type: SEND_LOGIN_SUCCESS, payload: data.user });
+        })
+        .catch((error) => {
+            dispatch({ type: SEND_LOGIN_FAILED, payload: error.message });
+        });
+};
 
-export const sendLogin =
-    (data: IFormLogin): StoreThunk =>
-    (dispatch: StoreDispatch) => {
-        dispatch({ type: SEND_LOGIN_STARTED });
-        sendLoginData(data)
-            .then((data) => {
-                dispatch({ type: SEND_LOGIN_SUCCESS, payload: data.user });
-                localStorage.setItem('accessToken', data.accessToken);
-                localStorage.setItem('refreshToken', data.refreshToken);
-            })
-            .catch((error) => {
-                dispatch({ type: SEND_LOGIN_FAILED, payload: error.message });
-            });
-    };
+export const sendLogin: StoreThunk = (data: IFormLogin) => (dispatch) => {
+    dispatch({ type: SEND_LOGIN_STARTED });
+    sendLoginData(data)
+        .then((data) => {
+            dispatch({ type: SEND_LOGIN_SUCCESS, payload: data.user });
+            localStorage.setItem('accessToken', data.accessToken);
+            localStorage.setItem('refreshToken', data.refreshToken);
+        })
+        .catch((error) => {
+            dispatch({ type: SEND_LOGIN_FAILED, payload: error.message });
+        });
+};
 
-export const sendLogout = (): StoreThunk => (dispatch: StoreDispatch) => {
+export const sendLogout: StoreThunk = () => (dispatch) => {
     logoutRequest()
         .then((data) => {
             localStorage.removeItem('accessToken');
@@ -135,28 +131,24 @@ export const sendLogout = (): StoreThunk => (dispatch: StoreDispatch) => {
         .catch((error) => {});
 };
 
-export const updateUser =
-    (forgotForm: IFormRegister): StoreThunk =>
-    (dispatch: StoreDispatch) => {
-        dispatch({ type: UPDATE_FORM_STARTED });
-        updateUserApi(forgotForm)
-            .then((data) => {
-                dispatch({ type: UPDATE_FORM_SUCCESS, payload: data.user });
-            })
-            .catch((error) => {
-                dispatch({ type: UPDATE_FORM_FAILED, payload: error.message });
-            });
-    };
+export const updateUser: StoreThunk = (forgotForm: IFormRegister) => (dispatch) => {
+    dispatch({ type: UPDATE_FORM_STARTED });
+    updateUserApi(forgotForm)
+        .then((data) => {
+            dispatch({ type: UPDATE_FORM_SUCCESS, payload: data.user });
+        })
+        .catch((error) => {
+            dispatch({ type: UPDATE_FORM_FAILED, payload: error.message });
+        });
+};
 
-export const registerUser =
-    (forgotForm: IFormRegister): StoreThunk =>
-    (dispatch: StoreDispatch) => {
-        dispatch({ type: REGISTER_USER_STARTED });
-        sendRegisterData(forgotForm)
-            .then((data) => {
-                dispatch({ type: REGISTER_USER_SUCCESS, payload: data.user });
-            })
-            .catch((error) => {
-                dispatch({ type: REGISTER_USER_FAILED, payload: error.message });
-            });
-    };
+export const registerUser: StoreThunk = (forgotForm: IFormRegister) => (dispatch) => {
+    dispatch({ type: REGISTER_USER_STARTED });
+    sendRegisterData(forgotForm)
+        .then((data) => {
+            dispatch({ type: REGISTER_USER_SUCCESS, payload: data.user });
+        })
+        .catch((error) => {
+            dispatch({ type: REGISTER_USER_FAILED, payload: error.message });
+        });
+};

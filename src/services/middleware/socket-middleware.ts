@@ -1,5 +1,7 @@
 import { ActionCreatorWithoutPayload, ActionCreatorWithPayload } from '@reduxjs/toolkit';
-import { Middleware } from 'redux';
+import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from 'redux';
+import { RootState } from '../store';
+import { checkAuth } from '../user/action';
 
 export type TWSActionsTypes = {
     wsConnect: ActionCreatorWithPayload<string>;
@@ -12,8 +14,8 @@ export type TWSActionsTypes = {
     onMessage: ActionCreatorWithPayload<any>;
 };
 
-export const socketMiddleware = (wsActions: TWSActionsTypes) => {
-    return ((store) => {
+export const socketMiddleware = (wsActions: TWSActionsTypes): Middleware<{}, RootState> => {
+    return (store: MiddlewareAPI<Dispatch, RootState>) => {
         let socket: WebSocket | null = null;
 
         return (next) => (action) => {
@@ -37,7 +39,12 @@ export const socketMiddleware = (wsActions: TWSActionsTypes) => {
                 socket.onmessage = (event) => {
                     const { data } = event;
                     const parsedData = JSON.parse(data);
-                    dispatch(onMessage(parsedData));
+                    if (parsedData.message === 'Invalid or missing token') {
+                        console.log('Invalid or missing token');
+                        dispatch(checkAuth() as unknown as AnyAction);
+                    } else {
+                        dispatch(onMessage(parsedData));
+                    }
                 };
 
                 socket.onclose = (event) => {
@@ -56,5 +63,5 @@ export const socketMiddleware = (wsActions: TWSActionsTypes) => {
 
             next(action);
         };
-    }) as Middleware;
+    };
 };

@@ -5,7 +5,7 @@ import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { removeIngredient, addIngredient } from '../../services/constructor-ingredients/actions';
 import { allIngredients } from '../../services/constructor-ingredients/selector';
-import { getOrderModal } from '../../services/modal-order/selector';
+import { getOrderAll } from '../../services/modal-order/selector';
 import { closeModalOrder, sendIngredients } from '../../services/modal-order/action';
 import React, { useMemo } from 'react';
 import { useDrop } from 'react-dnd';
@@ -17,9 +17,11 @@ import { useDispatch, useSelector } from '../../services/store';
 function BurgerConstructor() {
     const user = useSelector(selectUser);
     const { bun, toppings } = useSelector(allIngredients);
-    const number = useSelector(getOrderModal);
+    const { isCreatedOrder } = useSelector(getOrderAll);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    console.log('isCreatedOrder', isCreatedOrder);
 
     const getPrice = useMemo<number>(() => {
         const res = toppings.map((i) => i.price).reduce((acc, item) => acc + item, 0);
@@ -115,9 +117,9 @@ function BurgerConstructor() {
                     Оформить заказ
                 </Button>
             </div>
-            {number && (
+            {isCreatedOrder && (
                 <Modal onClose={() => dispatch(closeModalOrder())}>
-                    <OrderDetails order={number} />
+                    <OrderDetails />
                 </Modal>
             )}
         </section>
