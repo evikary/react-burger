@@ -21,7 +21,7 @@ function ModalFeedOrders() {
     const order = orders.filter((item) => item.number === Number(number))[0] || currentOrder;
 
     useEffect(() => {
-        if (!order) {
+        if (!order && number) {
             dispath(getAllOrderApi(number));
         }
     }, []);

@@ -1,6 +1,7 @@
+import { ThunkAction } from 'redux-thunk';
 import { IFormLogin, IFormRegister, IUser } from '../../utils/types';
 import { getUserApi, logoutRequest, sendLoginData, sendRegisterData, updateUserApi } from '../api';
-import { StoreDispatch, StoreThunk } from '../store';
+import { RootState, StoreDispatch, StoreThunk, TStoreActions } from '../store';
 
 export const AUTH_CHECKED: 'AUTH/CHECKED' = 'AUTH/CHECKED';
 
@@ -87,7 +88,7 @@ export type TUserActions =
     | IUpdateFormSuccessAction
     | IUpdateFormFailedAction;
 
-export const checkAuth: StoreThunk = () => (dispatch) => {
+export const checkAuth = (): ThunkAction<void, RootState, unknown, TStoreActions> => (dispatch) => {
     const token = localStorage.getItem('accessToken');
     if (token) {
         dispatch(getUser(token)).finally(() => {
@@ -98,30 +99,34 @@ export const checkAuth: StoreThunk = () => (dispatch) => {
     }
 };
 
-export const getUser: StoreThunk<Promise<unknown>> = (token: string) => (dispatch) => {
-    return getUserApi(token)
-        .then((data) => {
-            dispatch({ type: SEND_LOGIN_SUCCESS, payload: data.user });
-        })
-        .catch((error) => {
-            dispatch({ type: SEND_LOGIN_FAILED, payload: error.message });
-        });
-};
+export const getUser =
+    (token: string): ThunkAction<Promise<void>, RootState, unknown, TStoreActions> =>
+    (dispatch: StoreDispatch) => {
+        return getUserApi(token)
+            .then((data) => {
+                dispatch({ type: SEND_LOGIN_SUCCESS, payload: data.user });
+            })
+            .catch((error) => {
+                dispatch({ type: SEND_LOGIN_FAILED, payload: error.message });
+            });
+    };
 
-export const sendLogin: StoreThunk = (data: IFormLogin) => (dispatch) => {
-    dispatch({ type: SEND_LOGIN_STARTED });
-    sendLoginData(data)
-        .then((data) => {
-            dispatch({ type: SEND_LOGIN_SUCCESS, payload: data.user });
-            localStorage.setItem('accessToken', data.accessToken);
-            localStorage.setItem('refreshToken', data.refreshToken);
-        })
-        .catch((error) => {
-            dispatch({ type: SEND_LOGIN_FAILED, payload: error.message });
-        });
-};
+export const sendLogin =
+    (data: IFormLogin): ThunkAction<void, RootState, unknown, TStoreActions> =>
+    (dispatch: StoreDispatch) => {
+        dispatch({ type: SEND_LOGIN_STARTED });
+        sendLoginData(data)
+            .then((data) => {
+                dispatch({ type: SEND_LOGIN_SUCCESS, payload: data.user });
+                localStorage.setItem('accessToken', data.accessToken);
+                localStorage.setItem('refreshToken', data.refreshToken);
+            })
+            .catch((error) => {
+                dispatch({ type: SEND_LOGIN_FAILED, payload: error.message });
+            });
+    };
 
-export const sendLogout: StoreThunk = () => (dispatch) => {
+export const sendLogout = (): ThunkAction<void, RootState, unknown, TStoreActions> => (dispatch) => {
     logoutRequest()
         .then((data) => {
             localStorage.removeItem('accessToken');
@@ -131,24 +136,28 @@ export const sendLogout: StoreThunk = () => (dispatch) => {
         .catch((error) => {});
 };
 
-export const updateUser: StoreThunk = (forgotForm: IFormRegister) => (dispatch) => {
-    dispatch({ type: UPDATE_FORM_STARTED });
-    updateUserApi(forgotForm)
-        .then((data) => {
-            dispatch({ type: UPDATE_FORM_SUCCESS, payload: data.user });
-        })
-        .catch((error) => {
-            dispatch({ type: UPDATE_FORM_FAILED, payload: error.message });
-        });
-};
+export const updateUser =
+    (forgotForm: IFormRegister): ThunkAction<void, RootState, unknown, TStoreActions> =>
+    (dispatch: StoreDispatch) => {
+        dispatch({ type: UPDATE_FORM_STARTED });
+        updateUserApi(forgotForm)
+            .then((data) => {
+                dispatch({ type: UPDATE_FORM_SUCCESS, payload: data.user });
+            })
+            .catch((error) => {
+                dispatch({ type: UPDATE_FORM_FAILED, payload: error.message });
+            });
+    };
 
-export const registerUser: StoreThunk = (forgotForm: IFormRegister) => (dispatch) => {
-    dispatch({ type: REGISTER_USER_STARTED });
-    sendRegisterData(forgotForm)
-        .then((data) => {
-            dispatch({ type: REGISTER_USER_SUCCESS, payload: data.user });
-        })
-        .catch((error) => {
-            dispatch({ type: REGISTER_USER_FAILED, payload: error.message });
-        });
-};
+export const registerUser =
+    (forgotForm: IFormRegister): ThunkAction<void, RootState, unknown, TStoreActions> =>
+    (dispatch: StoreDispatch) => {
+        dispatch({ type: REGISTER_USER_STARTED });
+        sendRegisterData(forgotForm)
+            .then((data) => {
+                dispatch({ type: REGISTER_USER_SUCCESS, payload: data.user });
+            })
+            .catch((error) => {
+                dispatch({ type: REGISTER_USER_FAILED, payload: error.message });
+            });
+    };

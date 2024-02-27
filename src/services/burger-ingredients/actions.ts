@@ -1,6 +1,7 @@
+import { ThunkAction } from 'redux-thunk';
 import { IIngredient } from '../../utils/types';
 import { getIngredientsApi } from '../api';
-import { StoreDispatch, StoreThunk } from '../store';
+import { RootState, StoreDispatch, StoreThunk, TStoreActions } from '../store';
 
 export const GET_INGREDIENTS_REQUEST: 'INGREDIENTS/GET_ITEMS_REQUEST' = 'INGREDIENTS/GET_ITEMS_REQUEST';
 export const GET_IINGREDIENTS_SUCCESS: 'INGREDIENTS/GET_ITEMS_SUCCESS' = 'INGREDIENTS/GET_ITEMS_SUCCESS';
@@ -21,7 +22,7 @@ export interface IGetIngredientsFailedAction {
 
 export type TBurgerIngredientsActions = IGetIngredientsRequestAction | IGetIngredientsSuccessAction | IGetIngredientsFailedAction;
 
-export const getIngredients: StoreThunk = () => (dispatch) => {
+export const getIngredients = (): ThunkAction<void, RootState, unknown, TStoreActions> => (dispatch: StoreDispatch) => {
     dispatch({
         type: GET_INGREDIENTS_REQUEST,
     });
