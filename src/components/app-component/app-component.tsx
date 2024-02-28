@@ -3,7 +3,6 @@ import AppHeader from '../app-header/app-header';
 import ErrorAPI from '../error-api/error-api';
 import Loader from '../loader/loader';
 import { getIngredients } from '../../services/burger-ingredients/actions';
-import { useDispatch, useSelector } from 'react-redux';
 import { allItems } from '../../services/burger-ingredients/selector';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import Home from '../../pages/home/home';
@@ -20,6 +19,8 @@ import ProfileEdit from '../profile-edit/profile-edit';
 import Orders from '../orders/orders';
 import Modal from '../modal/modal';
 import ModalIngredientsDetails from '../modal-ingredients-details/modal-igredients-details';
+import { useDispatch, useSelector } from '../../services/store';
+import ModalFeedOrders from '../modal-feed-orders/modal-feed-orders';
 
 function App() {
     const { load, fail } = useSelector(allItems);
@@ -28,9 +29,7 @@ function App() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        //@ts-ignore
         dispatch(getIngredients());
-        //@ts-ignore
         dispatch(checkAuth());
     }, []);
 
@@ -52,6 +51,8 @@ function App() {
                             <Route path="orders" element={<OnlyAuth component={<Orders />} />} />
                         </Route>
                         <Route path="/feed" element={<Feed />} />
+                        <Route path="/feed/:number" element={<ModalFeedOrders />} />
+                        <Route path="/profile/orders/:number" element={<ModalFeedOrders />} />
                         <Route path="/ingredients/:id" element={<ModalIngredientsDetails />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
@@ -62,6 +63,22 @@ function App() {
                                 element={
                                     <Modal onClose={() => navigate(-1)}>
                                         <ModalIngredientsDetails />
+                                    </Modal>
+                                }
+                            />
+                            <Route
+                                path="/feed/:number"
+                                element={
+                                    <Modal onClose={() => navigate(-1)}>
+                                        <ModalFeedOrders />
+                                    </Modal>
+                                }
+                            />
+                            <Route
+                                path="/profile/orders/:number"
+                                element={
+                                    <Modal onClose={() => navigate(-1)}>
+                                        <ModalFeedOrders />
                                     </Modal>
                                 }
                             />

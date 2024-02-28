@@ -3,21 +3,21 @@ import { ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-de
 import { IDropCollectedProps, IIngredient } from '../../utils/types';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-import { useDispatch, useSelector } from 'react-redux';
 import { removeIngredient, addIngredient } from '../../services/constructor-ingredients/actions';
 import { allIngredients } from '../../services/constructor-ingredients/selector';
-import { getOrderModal } from '../../services/modal-order/selector';
+import { getOrderAll } from '../../services/modal-order/selector';
 import { closeModalOrder, sendIngredients } from '../../services/modal-order/action';
 import React, { useMemo } from 'react';
 import { useDrop } from 'react-dnd';
 import ToppingsConstructor from '../toppings-conctuctor/toppings-conctructor';
 import { selectUser } from '../../services/user/selector';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from '../../services/store';
 
 function BurgerConstructor() {
     const user = useSelector(selectUser);
     const { bun, toppings } = useSelector(allIngredients);
-    const number = useSelector(getOrderModal);
+    const { isCreatedOrder } = useSelector(getOrderAll);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -44,7 +44,6 @@ function BurgerConstructor() {
                 arr.unshift(bun._id);
                 arr.push(bun._id);
             }
-            //@ts-ignore
             dispatch(sendIngredients({ ingredients: arr }));
         }
     };
@@ -116,9 +115,9 @@ function BurgerConstructor() {
                     Оформить заказ
                 </Button>
             </div>
-            {number && (
+            {isCreatedOrder && (
                 <Modal onClose={() => dispatch(closeModalOrder())}>
-                    <OrderDetails order={number} />
+                    <OrderDetails />
                 </Modal>
             )}
         </section>

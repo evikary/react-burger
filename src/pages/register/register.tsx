@@ -1,7 +1,7 @@
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from '../../services/store';
 import { registerUser } from '../../services/user/action';
 import { selectRegisterError } from '../../services/user/selector';
 import { IFormRegister } from '../../utils/types';
@@ -18,7 +18,6 @@ function Register() {
 
     const registerFormUser = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        //@ts-ignore
         dispatch(registerUser(form));
     };
 

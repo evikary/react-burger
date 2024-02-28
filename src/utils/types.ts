@@ -13,11 +13,6 @@ export interface IIngredient {
     key?: string;
 }
 
-export interface IConstructor {
-    bun: IIngredient | null;
-    toppings: IIngredient[];
-}
-
 export interface IBodyPost {
     ingredients: string[];
 }
@@ -41,66 +36,6 @@ export interface IOrder {
         number: number;
         price: number;
     };
-}
-
-export interface IConstructorAction {
-    type: string;
-    payload: IIngredient;
-    from: number;
-    to: number;
-}
-
-export interface IStore {
-    ingredientsConstructor: IConstructor;
-    burgerIngredients: {
-        load: boolean;
-        fail: boolean;
-        items: IIngredient[];
-    };
-    orderModal: {
-        num: null | number;
-    };
-    ingredientModal: {
-        ingredientItem: null | IIngredient;
-    };
-    auth: {
-        user: IUser;
-        isAuthChecked: boolean;
-        registerUserError: null | string;
-        registerUserRequest: boolean;
-        loginUserError: null | string;
-        loginUserRequest: boolean;
-        updateUserError: null;
-        updateUserRequest: boolean;
-    };
-}
-
-export interface IIngredientsAction {
-    type: string;
-    payload: IIngredient[];
-}
-
-export interface IModalAction {
-    type: string;
-    payload: null | number;
-}
-
-export interface INumberOrder {
-    num: null | number;
-}
-
-export interface IModalIngredientsAction {
-    type: string;
-    payload: null | IIngredient;
-}
-
-export interface IIngredientItem {
-    ingredientItem: null | IIngredient;
-}
-
-export interface ILoginAction {
-    type: string;
-    payload: null | IUser;
 }
 
 export interface IFormResetPassword {
@@ -164,4 +99,48 @@ export interface IDropCollectedProps {
     canDrop: boolean;
     dragItem: IIngredient;
     isOver: boolean;
+}
+
+//WS
+
+export enum WebSocketStatus {
+    CONNECTING = 'CONNECTING',
+    ONLINE = 'ONLINE',
+    OFFLINE = 'OFFLINE',
+}
+
+export interface IOrder {
+    createdAt: string;
+    ingredients: string[];
+    name: string;
+    number: number;
+    status: string;
+    updatedAt: string;
+    _id: string;
+}
+
+export interface IIngredientsOrder {
+    createdAt: string;
+    ingredients: IIngredient[];
+    name: string;
+    number: number;
+    status: string;
+    updatedAt: string;
+    _id: string;
+}
+
+export interface IFeedOrders {
+    orders: IOrder[];
+    success: boolean;
+    total: number;
+    totalToday: number;
+}
+
+export interface IallOrderApi {
+    orders: [IOrderApi];
+    success: boolean;
+}
+
+export interface IOrderApi extends IOrder {
+    __v: number;
 }

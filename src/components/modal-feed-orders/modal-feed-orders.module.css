@@ -1,0 +1,51 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.status {
+    color: #00cccc;
+}
+
+.box {
+    min-width: 504px;
+    padding-right: 24px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+    composes: custom-scroll from global;
+    max-height: 304px;
+    overflow-y: scroll;
+    justify-content: space-between;
+}
+
+.component {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 16px;
+}
+
+.circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 100%;
+    border: 2px solid #801ab2;
+    background: #131316;
+    background-position: center;
+    background-size: cover;
+}
+
+.price {
+    display: flex;
+    column-gap: 8px;
+    align-items: center;
+}
+
+.box2 {
+    min-width: 504px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

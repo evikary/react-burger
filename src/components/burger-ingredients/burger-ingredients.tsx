@@ -3,9 +3,9 @@ import { useState } from 'react';
 import style from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientsСategory from '../ingredients-category/ingredients-category';
-import { useSelector } from 'react-redux';
 import { allItems } from '../../services/burger-ingredients/selector';
 import { IIngredient } from '../../utils/types';
+import { useSelector } from '../../services/store';
 
 function BurgerIngredients() {
     const { items } = useSelector(allItems);

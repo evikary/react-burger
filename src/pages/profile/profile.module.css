@@ -8,16 +8,15 @@
 }
 
 .container {
-    padding-top: 180px;
+    padding-top: 120px;
     width: 1280px;
     margin: auto;
     display: flex;
     column-gap: 60px;
-    align-items: center;
 }
 
 .box {
-    width: 320px;
+    max-width: 320px;
 }
 
 .text {

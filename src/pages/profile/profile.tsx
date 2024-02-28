@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { connect, disconnect } from '../../services/profile-orders/actions';
+import { useDispatch, useSelector } from '../../services/store';
 import { sendLogout } from '../../services/user/action';
 import { selectUser } from '../../services/user/selector';
+import { ORDER_URL } from '../../utils/ constants';
 import style from './profile.module.css';
 
 function Profile() {
@@ -11,7 +13,6 @@ function Profile() {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        //@ts-ignore
         dispatch(sendLogout());
     };
 
@@ -20,6 +21,14 @@ function Profile() {
             navigate('/login');
         }
     }, [user]);
+
+    useEffect(() => {
+        const accessToken = localStorage.getItem('accessToken')?.slice(7);
+        dispatch(connect(`${ORDER_URL}?token=${accessToken}`));
+        return () => {
+            dispatch(disconnect());
+        };
+    }, []);
 
     return (
         <main>

@@ -1,3 +1,3 @@
-import { IStore } from '../../utils/types';
+import { RootState } from '../store';
 
-export const allItems = (store: IStore) => store.burgerIngredients;
+export const allItems = (store: RootState) => store.burgerIngredients;

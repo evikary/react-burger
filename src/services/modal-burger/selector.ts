@@ -1,3 +1,3 @@
-import { IStore } from '../../utils/types';
+import { RootState } from '../store';
 
-export const getIngredientModal = (store: IStore) => store.ingredientModal.ingredientItem;
+export const getIngredientModal = (store: RootState) => store.ingredientModal.ingredientItem;

@@ -1,13 +1,20 @@
-import { IIngredientsAction } from '../../utils/types';
+import { IIngredient } from '../../utils/types';
+import { TStoreActions } from '../store';
 import { GET_IINGREDIENTS_FAILED, GET_IINGREDIENTS_SUCCESS, GET_INGREDIENTS_REQUEST } from './actions';
 
-const initialState = {
+type TIngredientsState = {
+    load: boolean;
+    fail: boolean;
+    items: ReadonlyArray<IIngredient>;
+};
+
+const initialState: TIngredientsState = {
     load: false,
     fail: false,
     items: [],
 };
 
-export const ingredientsReducer = (state = initialState, action: IIngredientsAction) => {
+export const ingredientsReducer = (state = initialState, action: TStoreActions): TIngredientsState => {
     switch (action.type) {
         case GET_INGREDIENTS_REQUEST: {
             return {
