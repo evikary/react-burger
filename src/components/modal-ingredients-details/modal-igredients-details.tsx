@@ -18,7 +18,7 @@ function ModalIngredientsDetails() {
             <h2 className={`text text_type_main-large ${style.title}`}>Детали ингредиента</h2>
             <img src={ingredient.image_large} alt={ingredient.name} />
             <p className="mt-4 text text_type_main-medium">{ingredient.name}</p>
-            <div className={`mt-8 ${style.box}`}>
+            <div data-testid="calories" className={`mt-8 ${style.box}`}>
                 <div className={style.box_mini}>
                     <span className="text text_type_main-default text_color_inactive">Калории,ккал</span>
                     <span className="text text_type_digits-default text_color_inactive">{ingredient.calories}</span>

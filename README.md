@@ -1,46 +1,27 @@
-# Getting Started with Create React App
+# Stellar Burgers
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Описание проекта
 
-## Available Scripts
+Здесь вы сможете собрать бургер из космических ингридиентов! Слева - доступные ингридиенты для создания вашего бургера, справа - ваш будущий заказ.
+Cоздать свой бургер вы можете с помощью Drag&Drop, далее сформировать заказ и отправить его на сервер.
+После этого вы можете отследить ваш заказ в лете заказов в реальном времени с помощью WebSocket соединения
 
-In the project directory, you can run:
+### **Проект разрабатывается с использованием:**
 
-### `npm start`
+-   React
+-   Redux (redux-thunk)
+-   Typescript
+-   React-dnd
+-   React Router
+-   WebSocket
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Посмотреть проект можно по ссылке
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+[Ссылка на сайт проекта](https://65e4cbe1a44d6dc578845370--taupe-mermaid-e0d4f2.netlify.app/).
 
-### `npm test`
+### Инструкция по работе
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. `npm install` — установить зависимости.
+2. `npm start` — запустить сайт на локальном сервере.
+3. `npm run build` — сборка для продакшена.
+4. `npm run test` - запустить тесты для проверки сайта

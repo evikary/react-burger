@@ -8,7 +8,7 @@ type TIngredientsState = {
     items: ReadonlyArray<IIngredient>;
 };
 
-const initialState: TIngredientsState = {
+export const initialState: TIngredientsState = {
     load: false,
     fail: false,
     items: [],

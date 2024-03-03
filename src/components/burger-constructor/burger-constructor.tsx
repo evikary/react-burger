@@ -65,7 +65,7 @@ function BurgerConstructor() {
 
     return (
         <section className={style.burger_constructor}>
-            <div ref={dropTarget}>
+            <div data-testid="constructor" ref={dropTarget}>
                 {bun !== null ? (
                     <div className={`ml-8 mb-4`}>
                         <ConstructorElement
@@ -111,7 +111,7 @@ function BurgerConstructor() {
                     <span className="text text_type_digits-medium">{getPrice}</span>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button onClick={() => sendApi()} disabled={disabledBtn} htmlType="button" type="primary" size="large">
+                <Button data-testid="orderBtn" onClick={() => sendApi()} disabled={disabledBtn} htmlType="button" type="primary" size="large">
                     Оформить заказ
                 </Button>
             </div>

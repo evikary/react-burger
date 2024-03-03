@@ -6,7 +6,7 @@ type TModalBurgerState = {
     ingredientItem: IIngredient | null;
 };
 
-const initialState: TModalBurgerState = {
+export const initialState: TModalBurgerState = {
     ingredientItem: null,
 };
 

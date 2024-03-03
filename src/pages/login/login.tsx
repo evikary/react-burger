@@ -30,7 +30,7 @@ function Login() {
                     <PasswordInput onChange={onChange} value={form.password} name={'password'} extraClass="mb-2" />
                 </div>
                 {loginFailed && <p className={`${style.faile} text_type_main-default mb-3`}>Вы ввели неверный пароль!</p>}
-                <Button htmlType="submit" type="primary" size="medium">
+                <Button data-testid="loginBtn" htmlType="submit" type="primary" size="medium">
                     Войти
                 </Button>
                 <div className={`pt-20 ${style.boxBtns}`}>
