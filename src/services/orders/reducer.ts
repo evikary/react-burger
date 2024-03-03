@@ -8,7 +8,7 @@ type TOrderState = {
     error: string;
 };
 
-const initialState: TOrderState = {
+export const initialState: TOrderState = {
     status: WebSocketStatus.OFFLINE,
     orders: {
         success: false,

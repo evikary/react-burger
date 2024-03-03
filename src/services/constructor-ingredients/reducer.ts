@@ -7,7 +7,7 @@ type TConstructorState = {
     toppings: ReadonlyArray<IIngredient>;
 };
 
-const initialState: TConstructorState = {
+export const initialState: TConstructorState = {
     bun: null,
     toppings: [],
 };

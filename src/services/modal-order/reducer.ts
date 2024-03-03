@@ -16,7 +16,7 @@ type TModalOrderState = {
     isCreatedOrder: boolean;
 };
 
-const initialState: TModalOrderState = {
+export const initialState: TModalOrderState = {
     currentOrder: null,
     num: null,
     isCreatedOrder: false,
