@@ -67,7 +67,7 @@ function BurgerIngredients() {
                     </li>
                 </ul>
             </aside>
-            <section onScroll={handleScroll} className={`${style.container} mt-10`}>
+            <section data-testid="ingredients" onScroll={handleScroll} className={`${style.container} mt-10`}>
                 <IngredientsСategory refCategory={bunRef} id={'buns'} ingredients={buns}>
                     Булки
                 </IngredientsСategory>
